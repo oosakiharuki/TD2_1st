@@ -8,6 +8,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "Player.h"
+#include "Soul.h"
 
 enum class PlayerNum {
 	right,
@@ -62,6 +63,11 @@ private: // メンバ変数
 
 	uint32_t number; 
 	PlayerNum playerNum;
+
+	//魂の流れ
+	Soul* soul_;
+	Model* SoulModel_;
+	WorldTransform SoulWorldTransform_;
 
 	/// <summary>
 	/// ゲームシーン用

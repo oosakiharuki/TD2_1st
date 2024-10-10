@@ -11,6 +11,7 @@ public:
 	void Draw();
 
 	void IsPlayer(bool isMove);
+	Vector3 GetWorldPosition();
 
 private:
 
@@ -26,6 +27,5 @@ private:
 	const float kJumpSpeed_ = 0.2f;
 
 	Input* input_ = nullptr;
-	MyMath* myMath_ = nullptr;
 
 };
