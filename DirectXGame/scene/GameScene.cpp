@@ -11,6 +11,8 @@ GameScene::~GameScene() {
 	}
 	delete SoulModel_;
 	delete soul_;
+	delete EnemyModel_;
+	delete enemy_;
 }
 
 void GameScene::Initialize() {
@@ -27,7 +29,7 @@ void GameScene::Initialize() {
 
 	for (int i = 0; i < 3; i++) {
 		player[i] = new Player();
-		player[i]->Initialize({-10.0f + float(i * 10), 0, 0}, model_, textureHandle_, &viewProjection_);
+		player[i]->Initialize({-20.0f + float(i * 20), 0, 0}, model_, textureHandle_, &viewProjection_);
 	}
 
 	number = 0;
@@ -36,6 +38,11 @@ void GameScene::Initialize() {
 	SoulModel_ = Model::CreateFromOBJ("cube", true);
 	soul_ = new Soul();
 	soul_->Initialize(SoulModel_, textureHandle_, &viewProjection_);
+
+
+	EnemyModel_ = Model::CreateFromOBJ("cube", true);
+	enemy_ = new Enemy();
+	enemy_->Initialize(EnemyModel_, textureHandle_, &viewProjection_);
 
 }
 
@@ -103,6 +110,8 @@ void GameScene::Update() {
 		soul_->Update();
 	}
 
+	enemy_->Update();
+
 	ChangePlayer();
 }
 
@@ -134,7 +143,7 @@ void GameScene::Draw() {
 	for (int i = 0; i < 3; i++) {
 		player[i]->Draw();
 	}
-
+	enemy_->Draw();
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>

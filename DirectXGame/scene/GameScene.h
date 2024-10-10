@@ -9,6 +9,7 @@
 #include "WorldTransform.h"
 #include "Player.h"
 #include "Soul.h"
+#include "Enemy.h"
 
 enum class PlayerNum {
 	right,
@@ -57,6 +58,7 @@ private: // メンバ変数
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
 
+	//プレイヤー
 	Player* player[3];
 	Model* model_;
 	uint32_t textureHandle_;
@@ -67,7 +69,10 @@ private: // メンバ変数
 	//魂の流れ
 	Soul* soul_;
 	Model* SoulModel_;
-	WorldTransform SoulWorldTransform_;
+
+	//敵
+	Enemy* enemy_;
+	Model* EnemyModel_;
 
 	/// <summary>
 	/// ゲームシーン用
