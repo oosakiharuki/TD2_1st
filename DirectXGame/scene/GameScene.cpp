@@ -9,6 +9,8 @@ GameScene::~GameScene() {
 	for (int i = 0; i < 3; i++) {
 		delete player[i];
 	}
+	delete SoulModel_;
+	delete soul_;
 }
 
 void GameScene::Initialize() {
@@ -30,54 +32,78 @@ void GameScene::Initialize() {
 
 	number = 0;
 	playerNum = PlayerNum::right;
+
+	SoulModel_ = Model::CreateFromOBJ("cube", true);
+	soul_ = new Soul();
+	soul_->Initialize(SoulModel_, textureHandle_, &viewProjection_);
+
 }
 
 void GameScene::ChangePlayer() {
 
 	if (number == 0) {
 		playerNum = PlayerNum::right;
+		if (input_->TriggerKey(DIK_D) && !soul_->IsMove()) {
+			number += 1;
+			soul_->Start(true);
+			soul_->GetPosition(player[0]->GetWorldPosition(), player[1]->GetWorldPosition());
+		}		
 	} 
 	else if (number == 1) {
 		playerNum = PlayerNum::flont;
-	} 
+		if (input_->TriggerKey(DIK_D) && !soul_->IsMove()) {
+			number += 1;
+			soul_->Start(true);
+			soul_->GetPosition(player[1]->GetWorldPosition(), player[2]->GetWorldPosition());
+		} 
+		else if (input_->TriggerKey(DIK_A) && !soul_->IsMove()) {
+			number -= 1;
+			soul_->Start(false);
+			soul_->GetPosition(player[1]->GetWorldPosition(), player[0]->GetWorldPosition());
+		}
+	}
 	else if (number == 2) {
 		playerNum = PlayerNum::left;
+		if (input_->TriggerKey(DIK_A) && !soul_->IsMove()) {
+			number -= 1;
+			soul_->Start(false);
+			soul_->GetPosition(player[2]->GetWorldPosition(), player[1]->GetWorldPosition());
+		}
 	}
 
-	if (input_->TriggerKey(DIK_D) && number < 2) {
-		number += 1;
-	}
-	if (input_->TriggerKey(DIK_A) && number > 0) {
-		number -= 1;
-	}
-
-
-	switch (playerNum) {
-	case PlayerNum::right:
-		player[0]->IsPlayer(true);
-		player[1]->IsPlayer(false);
-		player[2]->IsPlayer(false);
-		break;
-	case PlayerNum::flont:
-		player[0]->IsPlayer(false);
-		player[1]->IsPlayer(true);
-		player[2]->IsPlayer(false);
-		break;
-	case PlayerNum::left:
-		player[0]->IsPlayer(false);
-		player[1]->IsPlayer(false);
-		player[2]->IsPlayer(true);
-		break;
+	if (!soul_->IsMove()) {
+		switch (playerNum) {
+		case PlayerNum::right:
+			player[0]->IsPlayer(true);
+			player[1]->IsPlayer(false);
+			player[2]->IsPlayer(false);
+			break;
+		case PlayerNum::flont:
+			player[0]->IsPlayer(false);
+			player[1]->IsPlayer(true);
+			player[2]->IsPlayer(false);
+			break;
+		case PlayerNum::left:
+			player[0]->IsPlayer(false);
+			player[1]->IsPlayer(false);
+			player[2]->IsPlayer(true);
+			break;
+		}
 	}
 }
 
 void GameScene::Update() {
 
-	ChangePlayer();
-	
-	for (int i = 0; i < 3; i++) {
-		player[i]->Update();
+	if (!soul_->IsMove()) {
+		for (int i = 0; i < 3; i++) {
+			player[i]->Update();
+		}
 	}
+	else{
+		soul_->Update();
+	}
+
+	ChangePlayer();
 }
 
 void GameScene::Draw() {
@@ -102,6 +128,8 @@ void GameScene::Draw() {
 #pragma region 3Dオブジェクト描画
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
+
+	soul_->Draw();
 
 	for (int i = 0; i < 3; i++) {
 		player[i]->Draw();
