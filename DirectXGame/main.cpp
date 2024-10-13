@@ -7,6 +7,125 @@
 #include "TextureManager.h"
 #include "WinApp.h"
 
+#include "Title.h"
+#include "Clear.h"
+#include "GameOver.h"
+
+enum class Scene {
+	Title,
+	Game,
+	Clear,
+	GameOver
+};
+
+Scene scene_ = Scene::Title;
+
+GameScene* gameScene = nullptr;
+Title* title = nullptr;
+Clear* clear = nullptr;
+GameOver* gameOver = nullptr;
+
+void ChangeScene() {
+	switch (scene_) {
+	case Scene::Title:
+		if (title->IsFinished()) {
+			scene_ = Scene::Game;
+			delete title;
+			title = nullptr;
+
+			gameScene = new GameScene();
+			gameScene->Initialize();
+		}
+		break;
+	case Scene::Game:
+
+		// クリアとゲームオーオーバー
+		// scene_ = Scene::Clear;
+		// delete title;
+		// title = nullptr;
+
+		// clear = new Clear();
+		// clear->Initialize();
+
+		// scene_ = Scene::GameOver;
+		// delete title;
+		// title = nullptr;
+
+		// gameOver = new GameOver();
+		// gameOver->Initialize();
+		
+		
+		
+		//ポース入れるとき用
+		// if (gameScene->IsFinished()) {
+		//	scene_ = Scene::Title;
+		//	delete gameScene;
+		//	gameScene = nullptr;
+
+		//	title = new Title();
+		//	title->Initialize();
+		//}
+
+		break;
+	case Scene::Clear:
+		if (clear->IsFinished()) {
+			scene_ = Scene::Title;
+			delete clear;
+			clear = nullptr;
+
+			title = new Title();
+			title->Initialize();
+		}
+
+		break;
+	case Scene::GameOver:
+		if (gameOver->IsFinished()) {
+			scene_ = Scene::Title;
+			delete gameOver;
+			gameOver = nullptr;
+
+			title = new Title();
+			title->Initialize();
+		}
+
+		break;
+	}
+}
+
+void ChangeUpdate() {
+	switch (scene_) {
+	case Scene::Title:
+		title->Update();
+		break;
+	case Scene::Game:
+		gameScene->Update();
+		break;
+	case Scene::Clear:
+		clear->Update();
+		break;
+	case Scene::GameOver:
+		gameOver->Update();
+		break;
+	}
+}
+
+void ChangeDraw() {
+	switch (scene_) {
+	case Scene::Title:
+		title->Draw();
+		break;
+	case Scene::Game:
+		gameScene->Draw();
+		break;
+	case Scene::Clear:
+		clear->Draw();
+		break;
+	case Scene::GameOver:
+		gameOver->Draw();
+		break;
+	}
+}
+
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	WinApp* win = nullptr;
@@ -16,7 +135,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Audio* audio = nullptr;
 	AxisIndicator* axisIndicator = nullptr;
 	PrimitiveDrawer* primitiveDrawer = nullptr;
-	GameScene* gameScene = nullptr;
+	//GameScene* gameScene = nullptr;
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
@@ -58,8 +177,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #pragma endregion
 
 	// ゲームシーンの初期化
-	gameScene = new GameScene();
-	gameScene->Initialize();
+	//gameScene = new GameScene();
+	//gameScene->Initialize();
+	title = new Title();
+	title->Initialize();
 
 	// メインループ
 	while (true) {
@@ -73,7 +194,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// 入力関連の毎フレーム処理
 		input->Update();
 		// ゲームシーンの毎フレーム処理
-		gameScene->Update();
+		
+		ChangeScene();
+
+		ChangeUpdate();
+
 		// 軸表示の更新
 		axisIndicator->Update();
 		// ImGui受付終了
@@ -82,7 +207,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// 描画開始
 		dxCommon->PreDraw();
 		// ゲームシーンの描画
-		gameScene->Draw();
+		ChangeDraw();
 		// 軸表示の描画
 		axisIndicator->Draw();
 		// プリミティブ描画のリセット
@@ -95,6 +220,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// 各種解放
 	delete gameScene;
+	delete title;
+	delete clear;
+	delete gameOver;
 	// 3Dモデル解放
 	Model::StaticFinalize();
 	audio->Finalize();
