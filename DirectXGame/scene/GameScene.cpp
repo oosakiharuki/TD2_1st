@@ -37,7 +37,7 @@ void GameScene::Initialize() {
 
 	SoulModel_ = Model::CreateFromOBJ("cube", true);
 	soul_ = new Soul();
-	soul_->Initialize(SoulModel_, textureHandle_, &viewProjection_);
+	soul_->Initialize(SoulModel_, textureHandle_, &viewProjection_, {-20,0,0});
 
 
 	EnemyModel_ = Model::CreateFromOBJ("cube", true);
@@ -106,13 +106,24 @@ void GameScene::Update() {
 			player[i]->Update();
 		}
 	}
-	else{
-		soul_->Update();
-	}
 
+	soul_->Update();
+	
 	enemy_->Update();
 
 	ChangePlayer();
+	CheckAllCollisions();
+
+
+	if (soul_->IsDead()) {
+		isEnd_ = true;
+	}
+
+
+	//if (//敵を倒したとき) {
+	//	isClear_ = true;
+	//}
+
 }
 
 void GameScene::Draw() {
@@ -164,4 +175,40 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::CheckAllCollisions() { 
+	Vector3 A, B;
+
+	const float playerRadius = 1.0f;
+	
+	const float enemyRadiusX = 1.0f; 
+
+	Vector3 distance{};
+
+	float L;
+
+
+	///プレイヤーと敵の当たり判定(一マスのみ)
+
+	A = soul_->GetWorldPosition();	
+	B = enemy_->GetWorldPosition();
+
+	distance.x = (B.x - A.x) * (B.x - A.x);
+	distance.y = (B.y - A.y) * (B.y - A.y);
+	distance.z = (B.z - A.z) * (B.z - A.z);
+	
+	L = (playerRadius + enemyRadiusX) * (playerRadius + enemyRadiusX);
+
+
+	if (distance.x + distance.y + distance.z <= L) {
+		for (uint32_t i = 0; i < 3; i++) {
+			soul_->OnCollision();
+		}
+	}
+
+	///プレイヤーと落下物の当たり判定
+
+
+
 }

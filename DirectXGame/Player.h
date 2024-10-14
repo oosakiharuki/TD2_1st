@@ -12,6 +12,7 @@ public:
 
 	void IsPlayer(bool isMove);
 	Vector3 GetWorldPosition();
+	//void OnCollision();
 
 private:
 
@@ -27,5 +28,8 @@ private:
 	const float kJumpSpeed_ = 0.2f;
 
 	Input* input_ = nullptr;
-
+	//uint32_t hp;
+	//bool isHit = false;
+	//float HitCount = 5.0f;
+	//const float deltaTimer = 1.0f / 60.0f;
 };
