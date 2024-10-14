@@ -41,20 +41,21 @@ void ChangeScene() {
 
 		// クリアとゲームオーオーバー
 		// scene_ = Scene::Clear;
-		// delete title;
-		// title = nullptr;
+		// delete gameScene;
+		// gameScene = nullptr;
 
 		// clear = new Clear();
 		// clear->Initialize();
 
-		// scene_ = Scene::GameOver;
-		// delete title;
-		// title = nullptr;
+		if (gameScene->IsGameOver()) {
 
-		// gameOver = new GameOver();
-		// gameOver->Initialize();
-		
-		
+			scene_ = Scene::GameOver;
+			delete gameScene;
+			gameScene = nullptr;
+
+			gameOver = new GameOver();
+			gameOver->Initialize();
+		}
 		
 		//ポース入れるとき用
 		// if (gameScene->IsFinished()) {

@@ -6,6 +6,7 @@ public:
 	void Initialize(Model* model, uint32_t texture, ViewProjection* viewProjection);
 	void Update();
 	void Draw();
+	Vector3 GetWorldPosition();
 
 private:
 

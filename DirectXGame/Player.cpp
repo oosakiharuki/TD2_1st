@@ -23,6 +23,14 @@ void Player::Update() {
 	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
 	worldTransform_.translation_.y = min(worldTransform_.translation_.y, kMoveLimitY);
 
+	////ダメージを受けた後の無敵時間
+	//if (isHit) {
+	//	HitCount -= deltaTimer;
+	//	if (HitCount < 0.0f) {
+	//		isHit = false;
+	//		HitCount = 5.0f;
+	//	}
+	//}
 
 	worldTransform_.UpdateMatrix();
 }
@@ -57,3 +65,11 @@ Vector3 Player::GetWorldPosition() {
 
 	return worldPos;
 }
+
+//void Player::OnCollision() { 
+//	//プレイヤーのやつだけダメージ
+//	if (isPlayer && !isHit) {
+//		hp -= 1;
+//		isHit = true;
+//	}
+//}

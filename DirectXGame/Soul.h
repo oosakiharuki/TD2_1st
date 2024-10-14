@@ -2,8 +2,6 @@
 #include "WorldTransform.h"
 #include "MyMath.h"
 
-class Player;
-
 class Soul {
 public:
 
@@ -42,7 +40,7 @@ public:
 	}
 
 
-	void Initialize(Model* model, uint32_t texture, ViewProjection* viewProjection);
+	void Initialize(Model* model, uint32_t texture, ViewProjection* viewProjection,Vector3 position);
 	void Update();
 	void Draw();
 
@@ -50,6 +48,8 @@ public:
 	void GetPosition(Vector3 posS, Vector3 posE);
 	void Start(bool right);
 	bool IsMove() const { return isMove; }
+	void OnCollision();
+	bool IsDead() { return isDead_; }
 
 private:
 	uint32_t textureHandle_ = 0u;
@@ -58,9 +58,20 @@ private:
 	ViewProjection* viewProjection_;
 
 	Segment segment;
-	Player* player_;
 
 	Vector3 velocity_;
+	Vector3 nextPos;
 	bool isMove = false;
 	HowToMove how;
+
+	float timer_ = 0.5f;
+	const float kDeltaTimer_ = 1.0f / 60.0f;
+	const float kJumpSpeed_ = 0.2f;
+
+	uint32_t hp;
+	bool isHit = false;
+	float HitCount = 5.0f;
+	const float deltaTimer = 1.0f / 60.0f;
+
+	bool isDead_ = false;
 };

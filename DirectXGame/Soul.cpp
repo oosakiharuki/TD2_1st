@@ -1,12 +1,15 @@
 #include "Soul.h"
-#include "Player.h"
 
-void Soul::Initialize(Model* model, uint32_t texture, ViewProjection* viewProjection) {
+void Soul::Initialize(Model* model, uint32_t texture, ViewProjection* viewProjection, Vector3 position) {
 
 	textureHandle_ = texture;
 	model_ = model;
 	worldTransform_.Initialize();
+	worldTransform_.translation_ = position;
 	viewProjection_ = viewProjection;
+
+	hp = 3;
+	isDead_ = false;
 }
 
 void Soul::Start(bool right) { 
@@ -48,38 +51,77 @@ void Soul::GetPosition(Vector3 posS, Vector3 posE) {
 
 	velocity_ = TransformNormal(velocity_, worldTransform_.matWorld_);
 
+	nextPos = posE;
 }
 
+void Soul::OnCollision() {
+	if (!isHit) {
+		hp -= 1;
+		isHit = true;
+	}
+}
 
 void Soul::Update() {
-
-
+		
 	worldTransform_.UpdateMatrix();
 
-	worldTransform_.translation_.x += velocity_.x;
-	worldTransform_.translation_.y += velocity_.y;
-	
+	if (!isMove) {
 
-	Vector3 move =  clamp(worldTransform_.translation_, segment.origin, segment.diff);
+		timer_ -= kDeltaTimer_;
+		if (timer_ > 0) {
+		    worldTransform_.translation_.y += kJumpSpeed_;
+		}
+		
+		Vector3 pos = {0, 0.06f, 0};
 
-	switch (how) {
-	case HowToMove::right:
-		if (move.x >= segment.diff.x) {
-			isMove = false;
+		worldTransform_.translation_.y -= pos.y;
+
+		const float kMoveLimitY = 16.0f;
+
+		worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
+		worldTransform_.translation_.y = min(worldTransform_.translation_.y, kMoveLimitY);
+	} else {
+
+		worldTransform_.translation_.x += velocity_.x;
+		worldTransform_.translation_.y += velocity_.y;
+
+		Vector3 move = clamp(worldTransform_.translation_, segment.origin, segment.diff);
+
+		switch (how) {
+		case HowToMove::right:
+			if (move.x >= segment.diff.x) {
+				isMove = false;
+				worldTransform_.translation_ = nextPos; 
+			}
+			break;
+		case HowToMove::left:
+			if (move.x < segment.diff.x) {
+				isMove = false;
+				worldTransform_.translation_ = nextPos; 
+			}
+			break;
 		}
-		break;
-	case HowToMove::left:
-		if (move.x < segment.diff.x) {
-			isMove = false;
-		}
-		break;
+		timer_ = 0.5f;
 	}
 
+	// ダメージを受けた後の無敵時間
+	if (isHit) {
+		HitCount -= deltaTimer;
+		if (HitCount < 0.0f) {
+			isHit = false;
+			HitCount = 5.0f;
+		}
+	}
+
+	//㏋が0の時
+	if (!hp) {
+		isDead_ = true;
+	}
 }
 
 
 void Soul::Draw() {
-	if (isMove) {
+	//if (isMove) {
 		model_->Draw(worldTransform_, *viewProjection_);
-	}
+	//}
 }

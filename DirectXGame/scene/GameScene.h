@@ -49,6 +49,11 @@ public: // メンバ関数
 	void Draw();
 
 	void ChangePlayer();
+	void CheckAllCollisions();
+	
+	bool IsGameOver() { return isEnd_; }
+	bool IsGameClear() { return isClear_; }
+
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -73,6 +78,11 @@ private: // メンバ変数
 	//敵
 	Enemy* enemy_;
 	Model* EnemyModel_;
+
+	//勝ち負け
+	bool isEnd_ = false;
+	bool isClear_ = false;
+
 
 	/// <summary>
 	/// ゲームシーン用
