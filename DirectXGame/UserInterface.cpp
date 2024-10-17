@@ -1,6 +1,5 @@
 #include "UserInterface.h"
 
-
 void UserInterface::Initialize() {
 
 	gaugepos_ = { 1000.0f,30.0f };
