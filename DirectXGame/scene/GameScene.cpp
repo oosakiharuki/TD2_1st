@@ -46,6 +46,12 @@ void GameScene::Initialize() {
 	enemy_ = new Enemy();
 	enemy_->Initialize(EnemyModel_, textureHandle_, &viewProjection_);
 
+
+	screenBack = new ScreenBack();
+	screenBack->Initialisz();
+
+	userInterface_ = new UserInterface();
+	userInterface_->Initialize();
 }
 
 void GameScene::ChangePlayer() {

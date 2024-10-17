@@ -85,6 +85,9 @@ private: // メンバ変数
 	bool isEnd_ = false;
 	bool isClear_ = false;
 
+	ScreenBack* screenBack;
+
+	UserInterface* userInterface_;
 
 	/// <summary>
 	/// ゲームシーン用
