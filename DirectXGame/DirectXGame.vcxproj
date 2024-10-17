@@ -116,6 +116,7 @@
     <ClCompile Include="MyMath.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
+    <ClCompile Include="ScreenBack.cpp" />
     <ClCompile Include="Soul.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="WorldTransformEx.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="MyMath.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="scene\GameScene.h" />
+    <ClInclude Include="ScreenBack.h" />
     <ClInclude Include="Segment.h" />
     <ClInclude Include="Soul.h" />
     <ClInclude Include="Title.h" />

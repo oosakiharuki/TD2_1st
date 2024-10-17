@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "Soul.h"
 #include "Enemy.h"
+#include "ScreenBack.h"
 
 enum class PlayerNum {
 	right,
@@ -82,6 +83,9 @@ private: // メンバ変数
 	//勝ち負け
 	bool isEnd_ = false;
 	bool isClear_ = false;
+
+	//背景
+	ScreenBack* screenBack = nullptr;
 
 
 	/// <summary>

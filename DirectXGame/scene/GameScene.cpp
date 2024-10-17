@@ -13,6 +13,7 @@ GameScene::~GameScene() {
 	delete soul_;
 	delete EnemyModel_;
 	delete enemy_;
+	delete screenBack;
 }
 
 void GameScene::Initialize() {
@@ -44,6 +45,9 @@ void GameScene::Initialize() {
 	enemy_ = new Enemy();
 	enemy_->Initialize(EnemyModel_, textureHandle_, &viewProjection_);
 
+
+	screenBack = new ScreenBack();
+	screenBack->Initialisz();
 }
 
 void GameScene::ChangePlayer() {
@@ -135,6 +139,7 @@ void GameScene::Draw() {
 	// 背景スプライト描画前処理
 	Sprite::PreDraw(commandList);
 
+	screenBack->Drwa();//背景,skydomeに変えてもよい
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
@@ -207,8 +212,11 @@ void GameScene::CheckAllCollisions() {
 		}
 	}
 
-	///プレイヤーと落下物の当たり判定
-
+	///プレイヤーと敵の当たり判定
+	/// 
+	///プレイヤーとアイテム
+	/// 
+	/// プレイヤー攻撃と敵
 
 
 }
