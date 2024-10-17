@@ -23,7 +23,11 @@ void Particle::Update(Vector3 position) {
 
 
 	Vector3 soulPosition = position;
-	Vector3 previousPosition = soulPosition;
+
+	// モデル間のオフセット距離を定義
+	const float offsetDistanceX = 0.0f; // X軸方向のオフセット
+	const float offsetDistanceY = 0.0f; // Y軸方向のオフセット
+	const float offsetDistanceZ = 2.0f; // Z軸方向のオフセット
 
   for (int i = 0; i < WorldTransform_.size(); ++i) {
 		auto& worldTransform = WorldTransform_[i];
@@ -35,17 +39,14 @@ void Particle::Update(Vector3 position) {
 			pow(soulPosition.z - worldTransform.translation_.z, 2)
 		));
 
-		  // イージング係数の調整 (パーティクルごとに遅延を設定)
-		float delayFactor = 5.0f * i; // 各パーティクルに遅延を追加
-		float easingFactor = 0.05f + 0.1f * (1.0f - exp(-distance / delayFactor));
+		// イージング係数の調整 (パーティクルごとに遅延を設定)
+		float delayFactor = 5.0f * (i+1); // 各パーティクルに遅延を追加
+		float easingFactor = 0.05f + 0.1f * (1.0f - exp(-distance / delayFactor + 0.6f));
 
 		// イージング計算（遅延を考慮）
-		worldTransform.translation_.x += (soulPosition.x - worldTransform.translation_.x) * easingFactor;
-		worldTransform.translation_.y += (soulPosition.y - worldTransform.translation_.y) * easingFactor;
-		worldTransform.translation_.z += (soulPosition.z - worldTransform.translation_.z) * easingFactor;
-
-		// 現在のモデルの位置を次のモデルの「前の位置」として設定
-		previousPosition = worldTransform.translation_;
+		worldTransform.translation_.x += (soulPosition.x - worldTransform.translation_.x + offsetDistanceX) * easingFactor;
+		worldTransform.translation_.y += (soulPosition.y - worldTransform.translation_.y + offsetDistanceY) * easingFactor;
+		worldTransform.translation_.z += (soulPosition.z - worldTransform.translation_.z + offsetDistanceZ) * easingFactor;
 	}
 
 	
