@@ -16,7 +16,11 @@ Vector3 ClosestPoint(const Vector3& point, const Segment& v2);
 Vector3 Normalize(const Vector3& v);
 Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
 
-
+Matrix4x4 MakeRotateXMatrix(float radian);
+Matrix4x4 MakeRotateYMatrix(float radian);
+Matrix4x4 MakeRotateZMatrix(float radian);
+Matrix4x4 MakeTranslateMatrix(const Vector3& teanslate);
+Matrix4x4 MakeScaleMatrix(const Vector3& Scale);
 
 Vector3 operator+(Vector3 v1, Vector3 v2);
 Vector3 operator-(Vector3 v1, Vector3 v2);

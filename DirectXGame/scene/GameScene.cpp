@@ -15,6 +15,8 @@ GameScene::~GameScene() {
 	delete enemy_;
 	delete screenBack;
 	delete userInterface_;
+	delete particlemodel_;
+	delete particle_;
 }
 
 void GameScene::Initialize() {
@@ -52,6 +54,10 @@ void GameScene::Initialize() {
 
 	userInterface_ = new UserInterface();
 	userInterface_->Initialize();
+
+	particlemodel_ = Model::CreateFromOBJ("cube", true);
+	particle_ = new Particle();
+	particle_->Initialize(particlemodel_, &viewProjection_, Vector3(-20.0f, 0, 0));
 }
 
 void GameScene::ChangePlayer() {
@@ -129,6 +135,8 @@ void GameScene::Update() {
 
 	userInterface_->Update();
 
+	particle_->Update(soul_->GetWorldPosition());
+
 	//if (//敵を倒したとき) {
 	//	isClear_ = true;
 	//}
@@ -144,7 +152,7 @@ void GameScene::Draw() {
 	// 背景スプライト描画前処理
 	Sprite::PreDraw(commandList);
 
-	screenBack->Drwa();//背景,skydomeに変えてもよい
+	//screenBack->Drwa();//背景,skydomeに変えてもよい
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
@@ -167,6 +175,9 @@ void GameScene::Draw() {
 		player[i]->Draw();
 	}
 	enemy_->Draw();
+
+	particle_->Draw();
+
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
