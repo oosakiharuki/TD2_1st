@@ -14,6 +14,7 @@ GameScene::~GameScene() {
 	delete EnemyModel_;
 	delete enemy_;
 	delete screenBack;
+	delete userInterface_;
 }
 
 void GameScene::Initialize() {
@@ -45,9 +46,6 @@ void GameScene::Initialize() {
 	enemy_ = new Enemy();
 	enemy_->Initialize(EnemyModel_, textureHandle_, &viewProjection_);
 
-
-	screenBack = new ScreenBack();
-	screenBack->Initialisz();
 }
 
 void GameScene::ChangePlayer() {
@@ -123,6 +121,7 @@ void GameScene::Update() {
 		isEnd_ = true;
 	}
 
+	userInterface_->Update();
 
 	//if (//敵を倒したとき) {
 	//	isClear_ = true;
@@ -143,6 +142,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
+
+	userInterface_->Draw2D();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
