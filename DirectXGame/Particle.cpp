@@ -40,8 +40,8 @@ void Particle::Update(Vector3 position) {
 		));
 
 		// イージング係数の調整 (パーティクルごとに遅延を設定)
-		float delayFactor = 5.0f * (i+1); // 各パーティクルに遅延を追加
-		float easingFactor = 0.05f + 0.1f * (1.0f - exp(-distance / delayFactor + 0.6f));
+		float delayFactor = 13.0f * (i+1); // 各パーティクルに遅延を追加
+		float easingFactor = 0.05f + 0.1f * (1.0f - exp(-distance / delayFactor + 0.5f));
 
 		// イージング計算（遅延を考慮）
 		worldTransform.translation_.x += (soulPosition.x - worldTransform.translation_.x + offsetDistanceX) * easingFactor;
