@@ -15,7 +15,12 @@ void Player::Update() {
 	move = {0, 0.06f, 0};
 
 	if (isPlayer) {
+		timer_ -= kDeltaTimer_;
+		if (timer_ > 0) {
+			worldTransform_.translation_.y += kJumpSpeed_;
+		}
 		worldTransform_.translation_.y -= move.y;
+
 	}
 
 	const float kMoveLimitY = 16.0f;
@@ -31,7 +36,7 @@ void Player::Update() {
 	//		HitCount = 5.0f;
 	//	}
 	//}
-
+			
 	worldTransform_.UpdateMatrix();
 }
 
@@ -44,11 +49,6 @@ void Player::Draw() {
 void Player::IsPlayer(bool isMove) { 
 	if (isMove) {
 		isPlayer = true;
-		timer_ -= kDeltaTimer_;
-		if (timer_ > 0) {
-			worldTransform_.translation_.y += kJumpSpeed_;
-		}
-
 	} else {
 		isPlayer = false;
 		timer_ = 0.5f;

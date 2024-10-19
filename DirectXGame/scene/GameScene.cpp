@@ -65,6 +65,26 @@ void GameScene::Initialize() {
 
 void GameScene::ChangePlayer() {
 
+	if (!soul_->IsMove()) {
+		switch (playerNum) {
+		case PlayerNum::right:
+			player[0]->IsPlayer(true);
+			player[1]->IsPlayer(false);
+			player[2]->IsPlayer(false);
+			break;
+		case PlayerNum::flont:
+			player[0]->IsPlayer(false);
+			player[1]->IsPlayer(true);
+			player[2]->IsPlayer(false);
+			break;
+		case PlayerNum::left:
+			player[0]->IsPlayer(false);
+			player[1]->IsPlayer(false);
+			player[2]->IsPlayer(true);
+			break;
+		}
+	}
+
 	if (number == 0) {
 		playerNum = PlayerNum::right;
 		if (input_->TriggerKey(DIK_D) && !soul_->IsMove()) {
@@ -92,26 +112,6 @@ void GameScene::ChangePlayer() {
 			number -= 1;
 			soul_->Start(false);
 			soul_->GetPosition(player[2]->GetWorldPosition(), player[1]->GetWorldPosition());
-		}
-	}
-
-	if (!soul_->IsMove()) {
-		switch (playerNum) {
-		case PlayerNum::right:
-			player[0]->IsPlayer(true);
-			player[1]->IsPlayer(false);
-			player[2]->IsPlayer(false);
-			break;
-		case PlayerNum::flont:
-			player[0]->IsPlayer(false);
-			player[1]->IsPlayer(true);
-			player[2]->IsPlayer(false);
-			break;
-		case PlayerNum::left:
-			player[0]->IsPlayer(false);
-			player[1]->IsPlayer(false);
-			player[2]->IsPlayer(true);
-			break;
 		}
 	}
 }
