@@ -194,30 +194,34 @@ void GameScene::CheckAllCollisions() {
 
 	const float playerRadius = 1.0f;
 	
-	const float enemyRadiusX = 1.0f; 
+	const float enemyRadius = 1.0f; 
 
 	Vector3 distance{};
 
-	float L;
+	//float L;
 
 
 	///プレイヤーと敵の当たり判定(一マスのみ)
 
-	A = soul_->GetWorldPosition();	
+	A = soul_->GetWorldPosition();
 	B = enemy_->GetWorldPosition();
 
 	distance.x = (B.x - A.x) * (B.x - A.x);
 	distance.y = (B.y - A.y) * (B.y - A.y);
 	distance.z = (B.z - A.z) * (B.z - A.z);
 	
-	L = (playerRadius + enemyRadiusX) * (playerRadius + enemyRadiusX);
-
-
-	if (distance.x + distance.y + distance.z <= L) {
-		for (uint32_t i = 0; i < 3; i++) {
+	if (A.x <= B.x + enemyRadius && A.x + playerRadius >= B.x &&
+		A.y <= B.y + enemyRadius && A.y + playerRadius >= B.y) {
 			soul_->OnCollision();
-		}
 	}
+
+	//L = (playerRadius + enemyRadiusX) * (playerRadius + enemyRadiusX);
+
+	//if (distance.x + distance.y + distance.z <= L) {
+	//	for (uint32_t i = 0; i < 3; i++) {
+	//		soul_->OnCollision();
+	//	}
+	//}
 
 	///プレイヤーと敵の当たり判定
 	/// 
@@ -225,5 +229,27 @@ void GameScene::CheckAllCollisions() {
 	/// 
 	/// プレイヤー攻撃と敵
 
+	A = soul_->GetAttack()->GetWorldPosition();
+	B = enemy_->GetWorldPosition();
+
+	distance.x = (B.x - A.x) * (B.x - A.x);
+	distance.y = (B.y - A.y) * (B.y - A.y);
+	distance.z = (B.z - A.z) * (B.z - A.z);
+
+	const float attackRadiusX = 3.0f; 
+	const float attackRadiusY = 16.0f; 
+
+	if (A.x + -attackRadiusX <= B.x + enemyRadius && A.x + attackRadiusX >= B.x && 
+		A.y <= B.y + enemyRadius && A.y + attackRadiusY >= B.y) {
+		  enemy_->OnCollision();
+	}
+	
+	if (A.x + -attackRadiusX <= B.x + enemyRadius && A.x + attackRadiusX >= B.x && 
+		A.y >= B.y + -enemyRadius && A.y + -attackRadiusY <= B.y)
+	{
+		  enemy_->OnCollision();
+	}
+	///攻撃をくらわしてもプレイヤーと敵の当たり判定は残るよ
+	///UserInterfaceとAttackのクールタイムがちがうので合わせる
 
 }

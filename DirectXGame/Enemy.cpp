@@ -19,8 +19,6 @@ void Enemy::Update() {
 
 	worldTransform_.translation_.x += move.x;
 
-	int PosY = rand() % kPosY;
-
 	if (worldTransform_.translation_.x < -50.0f) {
 		worldTransform_.translation_.y = (float)PosY;
 		move.x = kSpeed;
@@ -30,15 +28,23 @@ void Enemy::Update() {
 	if (worldTransform_.translation_.x > 50.0f) {
 		worldTransform_.translation_.y = (float)PosY;
 		move.x = -kSpeed;
-		PosY = rand() % 16;
+		PosY = rand() % kPosY - 16;
+	}
+
+	if (isHit_) {
+		timer -= 1.0f / 60.0f;
+		if (timer < 0) {
+			isHit_ = false;
+			timer = 2.0f;
+		}
 	}
 
 }
 
-void Enemy::Draw() {
-
-	model_->Draw(worldTransform_,*viewProjection_,textureHandle_);
-
+void Enemy::Draw() { 
+	if (!isHit_) {
+		model_->Draw(worldTransform_, *viewProjection_, textureHandle_);
+	}
 }
 
 Vector3 Enemy::GetWorldPosition() {
@@ -50,3 +56,5 @@ Vector3 Enemy::GetWorldPosition() {
 
 	return worldPos;
 }
+
+void Enemy::OnCollision() { isHit_ = true; }

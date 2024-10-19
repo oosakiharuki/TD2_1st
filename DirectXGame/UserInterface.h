@@ -11,7 +11,7 @@
 class UserInterface
 {
 public:
-
+	~UserInterface();
 	/// 初期化
 	void Initialize();
 

@@ -1,4 +1,11 @@
 #include "Soul.h"
+#include "Input.h"
+#include "TextureManager.h"
+
+Soul::~Soul() {
+	delete attack_;
+	delete ModelAttack_;
+}
 
 void Soul::Initialize(Model* model, uint32_t texture, ViewProjection* viewProjection, Vector3 position) {
 
@@ -10,6 +17,14 @@ void Soul::Initialize(Model* model, uint32_t texture, ViewProjection* viewProjec
 
 	hp = 3;
 	isDead_ = false;
+	input_ = Input::GetInstance();
+
+	ModelAttack_ = Model::Create();
+	textureHandle2_ = TextureManager::Load("uvChecker.png");
+
+	attack_ = new Attack();			
+	attack_->Initialize(ModelAttack_, textureHandle2_, viewProjection_);
+
 }
 
 void Soul::Start(bool right) { 
@@ -62,8 +77,8 @@ void Soul::OnCollision() {
 }
 
 void Soul::Update() {
-		
-	worldTransform_.UpdateMatrix();
+
+
 
 	if (!isMove) {
 
@@ -80,6 +95,12 @@ void Soul::Update() {
 
 		worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
 		worldTransform_.translation_.y = min(worldTransform_.translation_.y, kMoveLimitY);
+		if (input_->TriggerKey(DIK_SPACE) && AttackCount <= 0.0f) {
+			isAttack = true;
+			attack_->SetPosition(GetWorldPosition());
+			AttackCount = 3.0f;
+		}
+
 	} else {
 
 		worldTransform_.translation_.x += velocity_.x;
@@ -89,7 +110,7 @@ void Soul::Update() {
 
 		switch (how) {
 		case HowToMove::right:
-			if (move.x >= segment.diff.x) {
+			if (move.x > segment.diff.x) {
 				isMove = false;
 				worldTransform_.translation_ = nextPos; 
 			}
@@ -116,12 +137,23 @@ void Soul::Update() {
 	//㏋が0の時
 	if (!hp) {
 		isDead_ = true;
+	}	
+
+	//攻撃後のクールタイム
+	AttackCount -= deltaTimer;
+	if (AttackCount < 0) {
+		AttackCount = 0;
 	}
+
+	attack_->Update();
+
+	worldTransform_.UpdateMatrix();
 }
 
 
 void Soul::Draw() {
-	//if (isMove) {
-		model_->Draw(worldTransform_, *viewProjection_);
+	model_->Draw(worldTransform_, *viewProjection_);
+	//if (isAttack) {
+		attack_->Draw();
 	//}
 }

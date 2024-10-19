@@ -7,6 +7,7 @@ public:
 	void Update();
 	void Draw();
 	Vector3 GetWorldPosition();
+	void OnCollision();
 
 private:
 
@@ -18,5 +19,8 @@ private:
 	Vector3 move;
 	static inline float kSpeed = 0.25f;//動く速さ
 	static inline int kPosY = 16;
+	int PosY = 0;
 
+	bool isHit_ = false;
+	float timer = 2.0f;
 };

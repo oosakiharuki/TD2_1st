@@ -1,10 +1,26 @@
 #include "Model.h"
 #include "WorldTransform.h"
 #include "MyMath.h"
+#include "Attack.h"
+
+class Input;
 
 class Soul {
 public:
+	~Soul();
+	void Initialize(Model* model, uint32_t texture, ViewProjection* viewProjection,Vector3 position);
+	void Update();
+	void Draw();
 
+	Vector3 GetWorldPosition();
+	void GetPosition(Vector3 posS, Vector3 posE);
+	void Start(bool right);
+	bool IsMove() const { return isMove; }
+	void OnCollision();
+	bool IsDead() { return isDead_; }
+	Attack* GetAttack() { return attack_; }
+
+private:
 	enum class HowToMove {
 		right,
 		left
@@ -39,19 +55,6 @@ public:
 		return result;
 	}
 
-
-	void Initialize(Model* model, uint32_t texture, ViewProjection* viewProjection,Vector3 position);
-	void Update();
-	void Draw();
-
-	Vector3 GetWorldPosition();
-	void GetPosition(Vector3 posS, Vector3 posE);
-	void Start(bool right);
-	bool IsMove() const { return isMove; }
-	void OnCollision();
-	bool IsDead() { return isDead_; }
-
-private:
 	uint32_t textureHandle_ = 0u;
 	Model* model_;
 	WorldTransform worldTransform_;
@@ -74,4 +77,13 @@ private:
 	const float deltaTimer = 1.0f / 60.0f;
 
 	bool isDead_ = false;
+
+	Input* input_ = nullptr;
+	Attack* attack_ = nullptr;
+	
+	float AttackCount = 0.0f;
+	Model* ModelAttack_ = nullptr;
+	uint32_t textureHandle2_ = 0u;
+
+	bool isAttack = false;
 };

@@ -1,5 +1,10 @@
 #include "UserInterface.h"
 
+UserInterface::~UserInterface() {
+	delete sprite2Dgauge ;
+	delete sprite2Dcharge;
+}
+
 void UserInterface::Initialize() {
 
 	gaugepos_ = { 1000.0f,30.0f };
