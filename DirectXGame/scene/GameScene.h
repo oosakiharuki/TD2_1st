@@ -12,6 +12,7 @@
 #include "Enemy.h"
 #include "ScreenBack.h"
 #include"UserInterface.h"
+#include"Particle.h"
 
 enum class PlayerNum {
 	right,
@@ -86,8 +87,11 @@ private: // メンバ変数
 	bool isClear_ = false;
 
 	ScreenBack* screenBack;
-
+	// UI
 	UserInterface* userInterface_;
+	// パーティクル
+	Particle* particle_;
+	Model* particlemodel_;
 
 	/// <summary>
 	/// ゲームシーン用
