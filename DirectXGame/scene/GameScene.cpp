@@ -17,6 +17,7 @@ GameScene::~GameScene() {
 	delete userInterface_;
 	delete particlemodel_;
 	delete particle_;
+	delete StageModel_;
 }
 
 void GameScene::Initialize() {
@@ -58,6 +59,8 @@ void GameScene::Initialize() {
 	particlemodel_ = Model::CreateFromOBJ("cube", true);
 	particle_ = new Particle();
 	particle_->Initialize(particlemodel_, &viewProjection_, Vector3(-20.0f, 0, 0));
+
+	StageModel_ = Model::CreateFromOBJ("Stage", true);
 }
 
 void GameScene::ChangePlayer() {
@@ -152,12 +155,10 @@ void GameScene::Draw() {
 	// 背景スプライト描画前処理
 	Sprite::PreDraw(commandList);
 
-	//screenBack->Drwa();//背景,skydomeに変えてもよい
+	screenBack->Drwa();//背景,skydomeに変えてもよい
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
-
-	userInterface_->Draw2D();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -168,6 +169,8 @@ void GameScene::Draw() {
 #pragma region 3Dオブジェクト描画
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
+
+	StageModel_->Draw(worldTransform_,viewProjection_);
 
 	soul_->Draw();
 
@@ -193,6 +196,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+
+	userInterface_->Draw2D();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

@@ -93,6 +93,8 @@ private: // メンバ変数
 	Particle* particle_;
 	Model* particlemodel_;
 
+	Model* StageModel_ = nullptr;
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
