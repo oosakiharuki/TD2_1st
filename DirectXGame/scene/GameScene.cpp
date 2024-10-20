@@ -43,7 +43,7 @@ void GameScene::Initialize() {
 	number = 0;
 	playerNum = PlayerNum::right;
 
-	SoulModel_ = Model::CreateFromOBJ("cube", true);
+	SoulModel_ = Model::CreateFromOBJ("particle", true);
 	soul_ = new Soul();
 	soul_->Initialize(SoulModel_, textureHandle_, &viewProjection_, {-20,0,0});
 
@@ -59,7 +59,7 @@ void GameScene::Initialize() {
 	userInterface_ = new UserInterface();
 	userInterface_->Initialize();
 
-	particlemodel_ = Model::CreateFromOBJ("cube", true);
+	particlemodel_ = Model::CreateFromOBJ("particle", true);
 	particle_ = new Particle();
 	particle_->Initialize(particlemodel_, &viewProjection_, Vector3(-20.0f, 0, 0));
 
