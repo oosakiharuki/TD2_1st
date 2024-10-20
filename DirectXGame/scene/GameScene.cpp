@@ -33,7 +33,7 @@ void GameScene::Initialize() {
 	PlayerOnModel_ = Model::CreateFromOBJ("playerOn", true);
 	PlayerOffModel_ = Model::CreateFromOBJ("playerOff", true);
 	textureHandleP_ = TextureManager::Load("playerOn/playerOn.png");
-	textureHandle_ = TextureManager::Load("uvChecker.png");
+	textureHandle_ = TextureManager::Load("enemy.png");
 
 	for (int i = 0; i < 3; i++) {
 		player[i] = new Player();
@@ -43,7 +43,7 @@ void GameScene::Initialize() {
 	number = 0;
 	playerNum = PlayerNum::right;
 
-	SoulModel_ = Model::CreateFromOBJ("particle", true);
+	SoulModel_ = Model::CreateFromOBJ("playerOn", true);
 	soul_ = new Soul();
 	soul_->Initialize(SoulModel_, textureHandle_, &viewProjection_, {-20,0,0});
 
