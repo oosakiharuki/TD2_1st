@@ -1,8 +1,9 @@
 #include "Player.h"
 
-void Player::Initialize(Vector3 position,Model* model, uint32_t texture, ViewProjection* viewProjection) {
+void Player::Initialize(Vector3 position, Model* model, Model* model2, uint32_t texture, ViewProjection* viewProjection) {
 
-	model_ = model;
+	modelOn_ = model;
+	modelOff_ = model2;
 	textureHandle_ = texture;
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
@@ -41,9 +42,12 @@ void Player::Update() {
 }
 
 void Player::Draw() {
-
-	model_->Draw(worldTransform_, *viewProjection_, textureHandle_);
-
+	if (isPlayer) {
+		modelOn_->Draw(worldTransform_, *viewProjection_, textureHandle_);
+	} 
+	else {
+		modelOff_->Draw(worldTransform_, *viewProjection_);
+	}
 }
 
 void Player::IsPlayer(bool isMove) { 

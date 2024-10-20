@@ -152,8 +152,9 @@ void Soul::Update() {
 
 
 void Soul::Draw() {
+	if (isMove) {
 	model_->Draw(worldTransform_, *viewProjection_);
-	//if (isAttack) {
+	}
 		attack_->Draw();
-	//}
+	
 }

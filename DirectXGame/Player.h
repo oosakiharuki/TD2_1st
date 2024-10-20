@@ -6,7 +6,7 @@
 
 class Player{
 public:
-	void Initialize(Vector3 position, Model* model, uint32_t texture, ViewProjection* viewProjection);
+	void Initialize(Vector3 position, Model* model, Model* model2, uint32_t texture, ViewProjection* viewProjection);
 	void Update();
 	void Draw();
 
@@ -18,7 +18,8 @@ private:
 
 	Vector3 move;
 	uint32_t textureHandle_ = 0u;
-	Model* model_;
+	Model* modelOn_;
+	Model* modelOff_;
 	WorldTransform worldTransform_;
 	ViewProjection* viewProjection_;
 

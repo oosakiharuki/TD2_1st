@@ -5,7 +5,8 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-	delete model_;
+	delete PlayerOnModel_;
+	delete PlayerOffModel_;
 	for (int i = 0; i < 3; i++) {
 		delete player[i];
 	}
@@ -29,12 +30,14 @@ void GameScene::Initialize() {
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
 
-	model_ = Model::CreateFromOBJ("cube", true);
+	PlayerOnModel_ = Model::CreateFromOBJ("playerOn", true);
+	PlayerOffModel_ = Model::CreateFromOBJ("playerOff", true);
+	textureHandleP_ = TextureManager::Load("playerOn/playerOn.png");
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 
 	for (int i = 0; i < 3; i++) {
 		player[i] = new Player();
-		player[i]->Initialize({-20.0f + float(i * 20), 0, 0}, model_, textureHandle_, &viewProjection_);
+		player[i]->Initialize({-20.0f + float(i * 20), 0, 0}, PlayerOnModel_,PlayerOffModel_, textureHandleP_, &viewProjection_);
 	}
 
 	number = 0;

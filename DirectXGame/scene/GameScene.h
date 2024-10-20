@@ -18,6 +18,7 @@ enum class PlayerNum {
 	right,
 	flont,
 	left,
+	move,
 };
 
 /// <summary>
@@ -68,8 +69,9 @@ private: // メンバ変数
 
 	//プレイヤー
 	Player* player[3];
-	Model* model_;
-	uint32_t textureHandle_;
+	Model* PlayerOnModel_;
+	Model* PlayerOffModel_;
+	uint32_t textureHandleP_;
 
 	uint32_t number; 
 	PlayerNum playerNum;
@@ -81,6 +83,7 @@ private: // メンバ変数
 	//敵
 	Enemy* enemy_;
 	Model* EnemyModel_;
+	uint32_t textureHandle_;
 
 	//勝ち負け
 	bool isEnd_ = false;
