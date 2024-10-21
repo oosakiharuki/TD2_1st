@@ -29,10 +29,9 @@ void UserInterface::Initialize() {
 
 	// 3つのハートを初期化
 	for (int i = 0; i < 3; ++i) {
-		Sprite* newsprite2DHP = new Sprite();
+		Sprite* newsprite2DHP = Sprite::Create(HPReticle, HPpos_, HPcolor_);
 		newsprite2DHP->Initialize();
 		Vector2 position = {40.0f + i * 47.0f, 17.0f};
-		newsprite2DHP = Sprite::Create(HPReticle, HPpos_, HPcolor_);
 		newsprite2DHP->SetPosition(position);
 		sprite2DHP_.push_back(newsprite2DHP);
 	}
