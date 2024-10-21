@@ -33,7 +33,8 @@ void GameScene::Initialize() {
 	PlayerOnModel_ = Model::CreateFromOBJ("playerOn", true);
 	PlayerOffModel_ = Model::CreateFromOBJ("playerOff", true);
 	textureHandleP_ = TextureManager::Load("playerOn/playerOn.png");
-	textureHandle_ = TextureManager::Load("enemy.png");
+	textureHandleE1_ = TextureManager::Load("enemy.png");
+	textureHandleE2_ = TextureManager::Load("enemyDamage.png");
 
 	for (int i = 0; i < 3; i++) {
 		player[i] = new Player();
@@ -42,15 +43,16 @@ void GameScene::Initialize() {
 
 	number = 0;
 	playerNum = PlayerNum::right;
+	scene_ = GameSystem::countdown;
 
 	SoulModel_ = Model::CreateFromOBJ("playerOn", true);
 	soul_ = new Soul();
-	soul_->Initialize(SoulModel_, textureHandle_, &viewProjection_, {-20,0,0});
+	soul_->Initialize(SoulModel_, textureHandleP_, &viewProjection_, {-20,0,0});
 
 
 	EnemyModel_ = Model::CreateFromOBJ("cube", true);
 	enemy_ = new Enemy();
-	enemy_->Initialize(EnemyModel_, textureHandle_, &viewProjection_);
+	enemy_->Initialize(EnemyModel_, textureHandleE1_,textureHandleE2_, &viewProjection_);
 
 
 	screenBack = new ScreenBack();
@@ -121,32 +123,78 @@ void GameScene::ChangePlayer() {
 
 void GameScene::Update() {
 
-	if (!soul_->IsMove()) {
-		for (int i = 0; i < 3; i++) {
-			player[i]->Update();
+	switch (scene_) {
+	case GameSystem::setumei:
+		break;
+	case GameSystem::countdown:
+		countDownTimer_ -= deltaTImer;
+		if (countDownTimer_ < 0) {
+			scene_ = GameSystem::game;
 		}
+		if (!soul_->IsMove()) {
+			for (int i = 0; i < 3; i++) {
+				player[i]->Update();
+			}
+		}
+
+		//soul_->Update();
+		//particle_->Update(soul_->GetWorldPosition());
+		//ChangePlayer();
+
+		break;
+	case GameSystem::game:
+
+		if (!soul_->IsMove()) {
+			for (int i = 0; i < 3; i++) {
+				player[i]->Update();
+			}
+		}
+
+		soul_->Update();
+
+		enemy_->Update();
+
+		ChangePlayer();
+		CheckAllCollisions();
+
+
+		if (soul_->IsDead()) {
+			scene_ = GameSystem::death;
+		}
+
+		userInterface_->Update();
+
+		particle_->Update(soul_->GetWorldPosition());
+
+		if (enemy_->IsDead()) {
+			scene_ = GameSystem::clear;
+		}
+
+		break;
+	case GameSystem::death:		
+		//死んだパーティクルを入れたい
+		deathTimer_ -= deltaTImer;
+		if (deathTimer_ < 0) {
+			isEnd_ = true;
+		}
+		enemy_->Update();
+		break;
+	case GameSystem::clear:	
+		// 倒したパーティクルを入れたい
+		deathTimer_ -= deltaTImer;
+		if (deathTimer_ < 0) {
+			isClear_ = true;
+		}
+
+		if (!soul_->IsMove()) {
+			for (int i = 0; i < 3; i++) {
+				player[i]->Update();
+			}
+		}
+
+		soul_->Update();
+		break;
 	}
-
-	soul_->Update();
-	
-	enemy_->Update();
-
-	ChangePlayer();
-	CheckAllCollisions();
-
-
-	if (soul_->IsDead()) {
-		isEnd_ = true;
-	}
-
-	userInterface_->Update();
-
-	particle_->Update(soul_->GetWorldPosition());
-
-	//if (//敵を倒したとき) {
-	//	isClear_ = true;
-	//}
-
 }
 
 void GameScene::Draw() {
@@ -173,17 +221,44 @@ void GameScene::Draw() {
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
 
-	StageModel_->Draw(worldTransform_,viewProjection_);
+	StageModel_->Draw(worldTransform_, viewProjection_);
 
-	soul_->Draw();
+	switch (scene_) {
+	case GameSystem::setumei:
+		break;
+	case GameSystem::countdown:
+		//soul_->Draw();
 
-	for (int i = 0; i < 3; i++) {
-		player[i]->Draw();
+		for (int i = 0; i < 3; i++) {
+			player[i]->Draw();
+		}
+		//particle_->Draw();
+		
+		break;
+	case GameSystem::game:
+
+		soul_->Draw();
+
+		for (int i = 0; i < 3; i++) {
+			player[i]->Draw();
+		}
+		
+		enemy_->Draw();
+		particle_->Draw();
+		break;
+	case GameSystem::death:
+		enemy_->Draw();
+
+		break;
+	case GameSystem::clear:
+		soul_->Draw();
+
+		for (int i = 0; i < 3; i++) {
+			player[i]->Draw();
+		}
+		particle_->Draw();
+		break;
 	}
-	enemy_->Draw();
-
-	particle_->Draw();
-
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
@@ -213,7 +288,7 @@ void GameScene::CheckAllCollisions() {
 
 	const float playerRadius = 1.0f;
 	
-	const float enemyRadius = 1.0f; 
+	const float enemyRadius = 2.0f; 
 
 	Vector3 distance{};
 
@@ -230,7 +305,7 @@ void GameScene::CheckAllCollisions() {
 	distance.z = (B.z - A.z) * (B.z - A.z);
 	
 	if (A.x <= B.x + enemyRadius && A.x + playerRadius >= B.x &&
-		A.y <= B.y + enemyRadius && A.y + playerRadius >= B.y) {
+		A.y <= B.y + enemyRadius && A.y + playerRadius >= B.y && !enemy_->IsHit()) {
 			soul_->OnCollision();
 	}
 

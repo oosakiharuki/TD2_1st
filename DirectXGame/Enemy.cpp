@@ -1,42 +1,72 @@
 #include "Enemy.h"
+#include <numbers>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
-void Enemy::Initialize(Model* model, uint32_t texture, ViewProjection* viewProjection) {
+void Enemy::Initialize(Model* model, uint32_t texture, uint32_t texture2, ViewProjection* viewProjection) {
 
 	model_ = model;
 	textureHandle_ = texture;
+	textureHandleDamage_ = texture2;
 	worldTransform_.Initialize();
 	viewProjection_ = viewProjection;
 
 	worldTransform_.translation_ = {30,-10,0};
-	worldTransform_.scale_.x = 1.0f;
+	worldTransform_.scale_ = {2,2,2};
+	worldTransform_.rotation_.y = std::numbers::pi_v<float> / -2.0f;
 
 	move = {-kSpeed, 0, 0};
+	hp = 10;
+
+	a = 2 * float(M_PI);
+
 }
 
 void Enemy::Update() {
-	
+
 	worldTransform_.UpdateMatrix();
 
 	worldTransform_.translation_.x += move.x;
+
+	walkTimer_ += 1.0f / 30.0f;
+
+	param = std::sin(a * walkTimer_ / kMaxTime);
+
+	if (Muki) {
+		radian = kAngleStart + kAngleEnd * (param + 1.0f) / 2.0f;
+	} else {
+		radian = -(kAngleStart + kAngleEnd * (param + 1.0f) / 2.0f);
+	}
 
 	if (worldTransform_.translation_.x < -50.0f) {
 		worldTransform_.translation_.y = (float)PosY;
 		move.x = kSpeed;
 		PosY = rand() % kPosY;
+		Muki = false;
 	}
 
 	if (worldTransform_.translation_.x > 50.0f) {
 		worldTransform_.translation_.y = (float)PosY;
 		move.x = -kSpeed;
 		PosY = rand() % kPosY - 16;
+		Muki = true;
 	}
 
 	if (isHit_) {
+		if (hp <= 0) {
+			isDead_ = true;
+		}
+		worldTransform_.translation_.x += move.x * 2;
+		worldTransform_.rotation_.x += std::sin(radian / 2.0f);
 		timer -= 1.0f / 60.0f;
 		if (timer < 0) {
+			hp -= 1;
 			isHit_ = false;
 			timer = 2.0f;
+			worldTransform_.rotation_.x = 0.0f;
 		}
+	} else {
+		worldTransform_.rotation_.x = std::sin(radian);
 	}
 
 }
@@ -44,6 +74,9 @@ void Enemy::Update() {
 void Enemy::Draw() { 
 	if (!isHit_) {
 		model_->Draw(worldTransform_, *viewProjection_, textureHandle_);
+	} 
+	else {
+		model_->Draw(worldTransform_, *viewProjection_, textureHandleDamage_);
 	}
 }
 

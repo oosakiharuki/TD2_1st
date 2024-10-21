@@ -18,7 +18,14 @@ enum class PlayerNum {
 	right,
 	flont,
 	left,
-	move,
+};
+
+enum class GameSystem {
+	setumei,
+	countdown,
+	game,
+	death,
+	clear
 };
 
 /// <summary>
@@ -75,6 +82,10 @@ private: // メンバ変数
 
 	uint32_t number; 
 	PlayerNum playerNum;
+	GameSystem scene_;
+
+	float countDownTimer_ = 4.0f;
+	const float deltaTImer = 1.0f / 60.0f;
 
 	//魂の流れ
 	Soul* soul_;
@@ -83,11 +94,13 @@ private: // メンバ変数
 	//敵
 	Enemy* enemy_;
 	Model* EnemyModel_;
-	uint32_t textureHandle_;
+	uint32_t textureHandleE1_;
+	uint32_t textureHandleE2_;
 
 	//勝ち負け
 	bool isEnd_ = false;
 	bool isClear_ = false;
+	float deathTimer_ = 2.0f;
 
 	ScreenBack* screenBack;
 	// UI

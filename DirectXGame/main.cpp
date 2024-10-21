@@ -40,14 +40,15 @@ void ChangeScene() {
 	case Scene::Game:
 
 		// クリアとゲームオーオーバー
-		// scene_ = Scene::Clear;
-		// delete gameScene;
-		// gameScene = nullptr;
+		if (gameScene->IsGameClear()) {
+			scene_ = Scene::Clear;
+			delete gameScene;
+			gameScene = nullptr;
 
-		// clear = new Clear();
-		// clear->Initialize();
-
-		if (gameScene->IsGameOver()) {
+			clear = new Clear();
+			clear->Initialize();
+		}
+		else if (gameScene->IsGameOver()) {
 
 			scene_ = Scene::GameOver;
 			delete gameScene;
