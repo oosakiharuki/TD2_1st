@@ -7,6 +7,7 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {
 	delete PlayerOnModel_;
 	delete PlayerOffModel_;
+	delete PlayerDamageModel_;
 	for (int i = 0; i < 3; i++) {
 		delete player[i];
 	}
@@ -32,13 +33,14 @@ void GameScene::Initialize() {
 
 	PlayerOnModel_ = Model::CreateFromOBJ("playerOn", true);
 	PlayerOffModel_ = Model::CreateFromOBJ("playerOff", true);
+	PlayerDamageModel_= Model::CreateFromOBJ("PlayerDamage", true);
 	textureHandleP_ = TextureManager::Load("playerOn/playerOn.png");
 	textureHandleE1_ = TextureManager::Load("enemy.png");
 	textureHandleE2_ = TextureManager::Load("enemyDamage.png");
 
 	for (int i = 0; i < 3; i++) {
 		player[i] = new Player();
-		player[i]->Initialize({-20.0f + float(i * 20), 0, 0}, PlayerOnModel_,PlayerOffModel_, textureHandleP_, &viewProjection_);
+		player[i]->Initialize({-20.0f + float(i * 20), 0, 0}, PlayerOnModel_, PlayerOffModel_, textureHandleP_, &viewProjection_);
 	}
 
 	number = 0;
@@ -60,6 +62,8 @@ void GameScene::Initialize() {
 
 	userInterface_ = new UserInterface();
 	userInterface_->Initialize();
+	timeSinceLastRemove_ = 30;
+	removeInterval_ = 30;
 
 	particlemodel_ = Model::CreateFromOBJ("particle", true);
 	particle_ = new Particle();
@@ -162,7 +166,20 @@ void GameScene::Update() {
 			scene_ = GameSystem::death;
 		}
 
-		userInterface_->Update();
+	userInterface_->Update();
+	// 無敵タイマー 
+	if (!HPfige_) {
+		timeSinceLastRemove_ += 1;
+	}
+	if (timeSinceLastRemove_ >= 30) {
+		timeSinceLastRemove_ = 30;
+	}
+	// 当たったらHPを減らしフラグリセット
+	if (HPfige_) {
+		userInterface_->RemoveHeart();
+		timeSinceLastRemove_ = 0;
+		HPfige_ = false;
+	}
 
 		particle_->Update(soul_->GetWorldPosition());
 
@@ -304,9 +321,10 @@ void GameScene::CheckAllCollisions() {
 	distance.y = (B.y - A.y) * (B.y - A.y);
 	distance.z = (B.z - A.z) * (B.z - A.z);
 	
-	if (A.x <= B.x + enemyRadius && A.x + playerRadius >= B.x &&
-		A.y <= B.y + enemyRadius && A.y + playerRadius >= B.y && !enemy_->IsHit()) {
-			soul_->OnCollision();
+	if (A.x <= B.x + enemyRadius && A.x + playerRadius >= B.x && //30秒ごとに判定がでる
+		A.y <= B.y + enemyRadius && A.y + playerRadius >= B.y && timeSinceLastRemove_ >= removeInterval_) {
+		soul_->OnCollision();
+		HPfige_ = userInterface_->IsButtonPressed();
 	}
 
 	//L = (playerRadius + enemyRadiusX) * (playerRadius + enemyRadiusX);

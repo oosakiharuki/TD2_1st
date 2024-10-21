@@ -18,6 +18,6 @@ private:
 	WorldTransform worldTransform_;
 	// パーティクルの個数
 	static inline const uint32_t KNumParticles = 3;
-	std::array<WorldTransform, KNumParticles> WorldTransform_;
+	std::array<WorldTransform, KNumParticles> WorldTransforms_;
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 };

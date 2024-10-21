@@ -78,6 +78,7 @@ private: // メンバ変数
 	Player* player[3];
 	Model* PlayerOnModel_;
 	Model* PlayerOffModel_;
+	Model* PlayerDamageModel_;
 	uint32_t textureHandleP_;
 
 	uint32_t number; 
@@ -110,6 +111,11 @@ private: // メンバ変数
 	Model* particlemodel_;
 
 	Model* StageModel_ = nullptr;
+
+	// HPフラグ
+	bool HPfige_ = false;
+	uint32_t timeSinceLastRemove_;
+	uint32_t removeInterval_;
 
 	/// <summary>
 	/// ゲームシーン用

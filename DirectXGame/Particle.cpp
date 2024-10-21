@@ -13,7 +13,7 @@ Vector3 Particle::GetWorldPosition() {
 void Particle::Initialize(Model* model, ViewProjection* viewprojection, Vector3 position) {
 	model_ = model;
 	viewprojection_ = viewprojection;
-	for (auto& WorldTransform : WorldTransform_) {
+	for (auto& WorldTransform : WorldTransforms_) {
 		WorldTransform.Initialize();
 		WorldTransform.translation_ = position;
 	}
@@ -29,8 +29,8 @@ void Particle::Update(Vector3 position) {
 	const float offsetDistanceY = 0.0f; // Y軸方向のオフセット
 	const float offsetDistanceZ = 2.0f; // Z軸方向のオフセット
 
-  for (int i = 0; i < WorldTransform_.size(); ++i) {
-		auto& worldTransform = WorldTransform_[i];
+  for (int i = 0; i < WorldTransforms_.size(); ++i) {
+		auto& worldTransform = WorldTransforms_[i];
 
 		// 距離の計算
 		float distance = static_cast<float>(sqrt(
@@ -50,7 +50,7 @@ void Particle::Update(Vector3 position) {
 	}
 
 	
-    for (auto& worldTransform : WorldTransform_) {
+    for (auto& worldTransform : WorldTransforms_) {
 
 		// スケーリング行列
 		Matrix4x4 scale = MakeScaleMatrix(worldTransform.scale_);
@@ -74,7 +74,7 @@ void Particle::Update(Vector3 position) {
 }
 
 void Particle::Draw() {
-	for (auto& worldTransform : WorldTransform_) {
+	for (auto& worldTransform : WorldTransforms_) {
 		model_->Draw(worldTransform, *viewprojection_);
 	}
 }
