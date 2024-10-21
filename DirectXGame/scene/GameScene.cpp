@@ -7,6 +7,7 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {
 	delete PlayerOnModel_;
 	delete PlayerOffModel_;
+	delete PlayerDamageModel_;
 	for (int i = 0; i < 3; i++) {
 		delete player[i];
 	}
@@ -32,12 +33,13 @@ void GameScene::Initialize() {
 
 	PlayerOnModel_ = Model::CreateFromOBJ("playerOn", true);
 	PlayerOffModel_ = Model::CreateFromOBJ("playerOff", true);
+	PlayerDamageModel_= Model::CreateFromOBJ("PlayerDamage", true);
 	textureHandleP_ = TextureManager::Load("playerOn/playerOn.png");
 	textureHandle_ = TextureManager::Load("enemy.png");
 
 	for (int i = 0; i < 3; i++) {
 		player[i] = new Player();
-		player[i]->Initialize({-20.0f + float(i * 20), 0, 0}, PlayerOnModel_,PlayerOffModel_, textureHandleP_, &viewProjection_);
+		player[i]->Initialize({-20.0f + float(i * 20), 0, 0}, PlayerOnModel_, PlayerOffModel_, textureHandleP_, &viewProjection_);
 	}
 
 	number = 0;

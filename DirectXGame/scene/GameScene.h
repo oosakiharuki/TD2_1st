@@ -71,6 +71,7 @@ private: // メンバ変数
 	Player* player[3];
 	Model* PlayerOnModel_;
 	Model* PlayerOffModel_;
+	Model* PlayerDamageModel_;
 	uint32_t textureHandleP_;
 
 	uint32_t number; 
