@@ -99,6 +99,11 @@ private: // メンバ変数
 
 	Model* StageModel_ = nullptr;
 
+	// HPフラグ
+	bool HPfige_ = false;
+	uint32_t timeSinceLastRemove_;
+	uint32_t removeInterval_;
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

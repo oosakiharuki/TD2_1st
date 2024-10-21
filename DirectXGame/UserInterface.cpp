@@ -52,23 +52,6 @@ void UserInterface::Update() {
 		attack_ = true;	
 	}
 
-	if (input_->PushKey(DIK_S) && timeSinceLastRemove >= removeInterval) {
-		HPfige_ = IsButtonPressed();
-	}
-
-	if (!HPfige_) {
-		timeSinceLastRemove += 1;
-	}
-
-	 // ボタンが押されたらハートを削除
-	if (HPfige_) {
-		RemoveHeart();
-		timeSinceLastRemove = 0;
-		HPfige_ = false;
-	}
-
-
-
 	if (attack_) {
 		attack_ = true;
 		Chargeswitch_ = true;

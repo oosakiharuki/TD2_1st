@@ -50,9 +50,6 @@ private:
 	// フラグ
 	bool Chargeswitch_ = false;
 	bool attack_ = false;
-	bool HPfige_ = false;
-	uint32_t timeSinceLastRemove = 0; 
-	uint32_t removeInterval = 30;
 
 	// キーボード入力
 	Input* input_ = nullptr;
