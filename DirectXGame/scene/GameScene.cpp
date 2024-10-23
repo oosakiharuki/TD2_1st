@@ -20,6 +20,7 @@ GameScene::~GameScene() {
 	delete particlemodel_;
 	delete particle_;
 	delete StageModel_;
+	delete deathParticle_;
 }
 
 void GameScene::Initialize() {
@@ -71,16 +72,15 @@ void GameScene::Initialize() {
 	particle_->Initialize(particlemodel_, &viewProjection_, Vector3(-20.0f, 0, 0));
 
 	StageModel_ = Model::CreateFromOBJ("Stage", true);
+
+	deathParticle_ = new DeathParticle();
+	deathParticle_->Initialize(particlemodel_,&viewProjection_);
 }
 
 void GameScene::ChangePlayer() {
 
-	if (playerDeath_ || soul_->IsMove()) {
-		player[0]->IsPlayer(false);
-		player[1]->IsPlayer(false);
-		player[2]->IsPlayer(false);
-	}
-	else  {
+
+	if (!soul_->IsMove()) {
 		switch (playerNum) {
 		case PlayerNum::right:
 			player[0]->IsPlayer(true);
@@ -99,6 +99,11 @@ void GameScene::ChangePlayer() {
 			break;
 		}
 	} 
+	else  {
+		player[0]->IsPlayer(false);
+		player[1]->IsPlayer(false);
+		player[2]->IsPlayer(false);
+	}
 
 	if (number == 0) {
 		playerNum = PlayerNum::right;
@@ -136,22 +141,6 @@ void GameScene::Update() {
 	switch (scene_) {
 	case GameSystem::setumei:
 		break;
-	//case GameSystem::countdown:
-	//	countDownTimer_ -= deltaTImer;
-	//	if (countDownTimer_ < 0) {
-	//		scene_ = GameSystem::game;
-	//	}
-	//	if (!soul_->IsMove()) {
-	//		for (int i = 0; i < 3; i++) {
-	//			player[i]->Update();
-	//		}
-	//	}
-
-	//	//soul_->Update();
-	//	//particle_->Update(soul_->GetWorldPosition());
-	//	//ChangePlayer();
-
-	//	break;
 	case GameSystem::game:
 
 		if (!soul_->IsMove()) {
@@ -168,8 +157,8 @@ void GameScene::Update() {
 		ChangePlayer();
 
 
-		if (soul_->IsDead()) {
-			playerDeath_ = true;
+		if (soul_->IsDead()) {		
+			deathParticle_->SetPosition(soul_->GetWorldPosition());
 			scene_ = GameSystem::death;	
 		}
 
@@ -198,27 +187,31 @@ void GameScene::Update() {
 
 		break;
 	case GameSystem::death:
-		//死んだパーティクルを入れたい
-		deathTimer_ -= deltaTImer;
-		if (deathTimer_ < 0) {
+		player[0]->IsPlayer(false);
+		player[1]->IsPlayer(false);
+		player[2]->IsPlayer(false);
+
+		deathParticle_->Update();
+		enemy_->Update();
+		if (deathParticle_->isFinish()) {
 			isEnd_ = true;
 		}
-		enemy_->Update();
 		break;
 	case GameSystem::clear:
-		// 倒したパーティクルを入れたい
-		deathTimer_ -= deltaTImer;
-		if (deathTimer_ < 0) {
-			isClear_ = true;
-		}
+		userInterface_->Update();
+		userInterface_->SetIsMove(!soul_->IsMove());
 
 		if (!soul_->IsMove()) {
 			for (int i = 0; i < 3; i++) {
-				player[i]->Update();
+				//player[i]->Update();
 			}
 		}
 
 		soul_->Update();
+
+		if (enemy_->IsFinish()) {
+			isClear_ = true;	
+		}
 		break;
 	}
 }
@@ -256,15 +249,6 @@ void GameScene::Draw() {
 	switch (scene_) {
 	case GameSystem::setumei:
 		break;
-	//case GameSystem::countdown:
-	//	//soul_->Draw();
-
-	//	for (int i = 0; i < 3; i++) {
-	//		player[i]->Draw();
-	//	}
-	//	//particle_->Draw();
-	//	
-	//	break;
 	case GameSystem::game:
 		soul_->Draw();
 		enemy_->Draw();
@@ -272,9 +256,10 @@ void GameScene::Draw() {
 		break;
 	case GameSystem::death:
 		enemy_->Draw();
-
+		deathParticle_->Draw();
 		break;
 	case GameSystem::clear:
+		enemy_->Draw();
 		soul_->Draw();
 		particle_->Draw();
 		break;
@@ -295,8 +280,11 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 	enemy_->Draw2D();
-	userInterface_->Draw2D();
-
+	switch (scene_) {
+	case GameSystem::game:
+		userInterface_->Draw2D();
+		break;
+	}
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
@@ -365,6 +353,5 @@ void GameScene::CheckAllCollisions() {
 		  enemy_->OnCollision();
 	}
 	///攻撃をくらわしてもプレイヤーと敵の当たり判定は残るよ
-	///UserInterfaceとAttackのクールタイムがちがうので合わせる
 
 }

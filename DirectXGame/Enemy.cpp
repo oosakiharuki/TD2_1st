@@ -3,6 +3,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "TextureManager.h"
+#include <algorithm>
 
 Enemy::~Enemy() {
 	delete spriteHp_;
@@ -34,6 +35,9 @@ void Enemy::Initialize(Model* model, uint32_t texture, uint32_t texture2, ViewPr
 	spriteBar_ = Sprite::Create(textureBer_, hpBarPos);
 	
 	hpBarPos = {1000,660};
+
+	objectColor_.Initialize();
+	color_ = {1, 1, 1, 1};
 }
 
 void Enemy::Update() {
@@ -90,10 +94,24 @@ void Enemy::Update() {
 
 void Enemy::Draw() { 
 	if (!isHit_) {
-		model_->Draw(worldTransform_, *viewProjection_, textureHandle_);
+		model_->Draw(worldTransform_, *viewProjection_, textureHandle_,&objectColor_);
 	} 
 	else {
-		model_->Draw(worldTransform_, *viewProjection_, textureHandleDamage_);
+		model_->Draw(worldTransform_, *viewProjection_, textureHandleDamage_, &objectColor_);
+	}
+
+	if (isDead_) {
+		worldTransform_.rotation_.x += std::sin(radian / 2.0f);
+
+		counter_ += 1.0f / 60.0f;
+		if (counter_ >= kDuration) {
+			counter_ = kDuration;
+			isFinish_ = true;
+		}
+
+		color_.w = std::clamp(kDuration - counter_, 0.0f, 1.0f);
+		objectColor_.SetColor(color_);
+		objectColor_.TransferMatrix();
 	}
 }
 

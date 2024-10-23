@@ -87,6 +87,4 @@ private:
 	float AttackCount = 3.0f;
 	Model* ModelAttack_ = nullptr;
 	uint32_t textureHandle2_ = 0u;
-
-	bool isAttack = false;
 };

@@ -30,3 +30,5 @@ Vector3 operator*(float f, Vector3 v);
 
 Vector3& operator+=(Vector3 v1, Vector3 v2);
 Vector3& operator+=(Vector3 v, float f);
+
+Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);

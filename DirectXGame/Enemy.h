@@ -14,6 +14,7 @@ public:
 
 	bool IsHit() const { return isHit_; }
 	bool IsDead() const { return isDead_; }
+	bool IsFinish() const { return isFinish_; }
 
 private:
 
@@ -22,7 +23,12 @@ private:
 	uint32_t textureHandleDamage_ = 0u;
 	WorldTransform worldTransform_;
 	ViewProjection* viewProjection_;
-	
+
+	Vector4 color_;
+	ObjectColor objectColor_;
+	static inline const float kDuration = 2.0f;
+	float counter_ = 0.0f;
+
 	Vector3 move;
 	static inline float kSpeed = 0.25f;//動く速さ
 	static inline int kPosY = 16;
@@ -43,6 +49,7 @@ private:
 	float timer = 2.0f;
 	uint32_t hp;
 	bool isDead_ = false;
+	bool isFinish_ = false;
 
 	uint32_t textureHp_ = 0u;
 	uint32_t textureBer_ = 0u;

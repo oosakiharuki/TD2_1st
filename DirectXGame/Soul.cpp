@@ -96,7 +96,6 @@ void Soul::Update() {
 		worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
 		worldTransform_.translation_.y = min(worldTransform_.translation_.y, kMoveLimitY);
 		if (userInterface_->GetAttack()) {
-			isAttack = true;
 			attack_->SetPosition(GetWorldPosition());
 		}
 

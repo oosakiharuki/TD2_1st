@@ -13,6 +13,7 @@
 #include "ScreenBack.h"
 #include"UserInterface.h"
 #include"Particle.h"
+#include "DeathParticle.h"
 
 enum class PlayerNum {
 	right,
@@ -101,7 +102,6 @@ private: // メンバ変数
 	bool isEnd_ = false;
 	bool isClear_ = false;
 	float deathTimer_ = 2.0f;
-	bool playerDeath_ = false;
 
 	ScreenBack* screenBack;
 	// UI
@@ -109,6 +109,7 @@ private: // メンバ変数
 	// パーティクル
 	Particle* particle_;
 	Model* particlemodel_;
+	DeathParticle* deathParticle_ = nullptr;
 
 	Model* StageModel_ = nullptr;
 
