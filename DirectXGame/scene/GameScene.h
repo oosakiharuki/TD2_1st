@@ -13,6 +13,7 @@
 #include "ScreenBack.h"
 #include"UserInterface.h"
 #include"Particle.h"
+#include"Sound.h"
 #include "DeathParticle.h"
 
 enum class PlayerNum {
@@ -117,6 +118,18 @@ private: // メンバ変数
 	bool HPfige_ = false;
 	float timeSinceLastRemove_;
 	float removeInterval_;
+
+
+	// 音声
+	Sound* soundBGM_ = nullptr;
+	Sound* soundSE_ = nullptr;
+	// 音声ファイル
+	std::wstring filenameBGM_ = L"./Resources/Sound/mokugyo.wav";
+	std::wstring filenameSE_ = L"./Resources/Sound/mokugyo.wav";
+	bool playSound = false; // 音声再生フラグ
+	bool loopSound = true;  // ループ再生フラグ
+	bool isPlaying = false; // 一時的音声の再生中フラグ
+	bool isLooping = false; // ループ音声の再生中フラグ
 
 	/// <summary>
 	/// ゲームシーン用

@@ -121,6 +121,7 @@
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="ScreenBack.cpp" />
     <ClCompile Include="Soul.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="WorldTransformEx.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="ScreenBack.h" />
     <ClInclude Include="Segment.h" />
     <ClInclude Include="Soul.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="UserInterface.h" />
   </ItemGroup>
