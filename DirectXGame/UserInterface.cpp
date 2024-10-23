@@ -19,11 +19,11 @@ void UserInterface::Initialize() {
 	uint32_t ChargeReticle = TextureManager::Load("charge.png");
 	uint32_t HPReticle = TextureManager::Load("HP.png");
 
-	gaugepos_ = { 1000.0f,30.0f };
+	gaugepos_ = { 1050.0f,5.0f };
 	gaugecolor_ = { 1.0f,1.0f,1.0f,1.0f };
-	chargepos_ = { 1000.0f,30.0f };
+	chargepos_ = { 1050.0f,5.0f };
 	chargecolor_ = { 1.0f,1.0f,1.0f,1.0f };
-	chargesize_ = { 0.0f,60.0f };
+	chargesize_ = { 0.0f,50.0f };
 	HPpos_ = {40.0f, 17.0f};
 	HPcolor_ = {1.0f, 1.0f, 1.0f, 1.0f};
 
