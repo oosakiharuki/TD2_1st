@@ -124,7 +124,7 @@ private: // メンバ変数
 	Sound* soundBGM_ = nullptr;
 	Sound* soundSE_ = nullptr;
 	// 音声ファイル
-	std::wstring filenameBGM_ = L"./Resources/Sound/mokugyo.wav";
+	std::wstring filenameBGM_ = L"./Resources/Sound/GameBGM.wav";
 	std::wstring filenameSE_ = L"./Resources/Sound/mokugyo.wav";
 	bool playSound = false; // 音声再生フラグ
 	bool loopSound = true;  // ループ再生フラグ
