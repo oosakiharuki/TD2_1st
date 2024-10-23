@@ -88,6 +88,9 @@ private: // メンバ変数
 	Model* PlayerOffModel_;
 	Model* PlayerDamageModel_;
 	uint32_t textureHandleP_;
+	uint32_t textureDamage_;
+	uint32_t currentTexture_;
+	bool PlayerDamagefige_ = false;
 
 	uint32_t number; 
 	PlayerNum playerNum;
@@ -147,6 +150,10 @@ private: // メンバ変数
 	// 音声
 	float volume1 = 0.3f;
 	float volume2 = 0.8f;
+
+	// テクスチャの切り替え用タイマー 
+    float textureSwitchTimer_ = 0.0f;
+	const float kTextureSwitchInterval_ = 0.2f; // 0.5秒ごとに切り替える
 
 	/// <summary>
 	/// ゲームシーン用

@@ -14,6 +14,9 @@ public:
 	Vector3 GetWorldPosition();
 	//void OnCollision();
 
+	// テクスチャを変更する関数 
+   void SetTexture(uint32_t textureHandle) { textureHandle_ = textureHandle; }
+
 private:
 
 	Vector3 move;

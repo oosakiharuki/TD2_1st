@@ -23,6 +23,9 @@ public:
 	void SetUI(UserInterface* ui) { userInterface_ = ui; }
 	AABB GetAABB();
 
+	// テクスチャを変更する関数
+	void SetTexture(uint32_t textureHandle) { textureHandle_ = textureHandle; }
+
 private:
 	enum class HowToMove {
 		right,

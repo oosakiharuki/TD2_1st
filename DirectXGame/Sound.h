@@ -17,6 +17,8 @@ public:
 	void LoadWav(const std::wstring& filePath);
 	void SetVolume(float volume); // 音量を設定するメソッドを追加
 
+	void Settexture();
+
 private:
 	HMMIO hMmio;
 	BYTE* waveData;

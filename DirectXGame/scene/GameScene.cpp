@@ -42,6 +42,8 @@ void GameScene::Initialize() {
 	PlayerOffModel_ = Model::CreateFromOBJ("playerOff", true);
 	PlayerDamageModel_= Model::CreateFromOBJ("PlayerDamage", true);
 	textureHandleP_ = TextureManager::Load("playerOn/playerOn.png");
+	textureDamage_  = TextureManager::Load("PlayerDamage/PlayerDamage.png");
+	currentTexture_ = TextureManager::Load("PlayerDamage/PlayerDamage.png");
 	textureHandleE1_ = TextureManager::Load("enemy.png");
 	textureHandleE2_ = TextureManager::Load("enemyDamage.png");
 
@@ -165,6 +167,31 @@ void GameScene::Update() {
 		break;
 	case GameSystem::game:
 
+		
+	if (PlayerDamagefige_) {
+			// テクスチャの切り替え処理
+			if (textureSwitchTimer_ >= kTextureSwitchInterval_) {
+				textureSwitchTimer_ = 0.0f; // タイマーをリセット
+
+				// テクスチャを交互に切り替え
+				if (currentTexture_ == textureDamage_) {
+					currentTexture_ = textureHandleP_;
+				} else {
+					currentTexture_ = textureDamage_;
+				}
+			}
+			for (int i = 0; i < 3; i++) {
+				player[i]->SetTexture(currentTexture_);
+			}
+			soul_->SetTexture(currentTexture_);
+		} else {
+			for (int i = 0; i < 3; i++) {
+				player[i]->SetTexture(textureHandleP_);
+			}
+			soul_->SetTexture(textureHandleP_);
+		}
+
+
 		if (!soul_->IsMove()) {
 			for (int i = 0; i < 3; i++) {
 				player[i]->Update();
@@ -190,15 +217,19 @@ void GameScene::Update() {
 		// 無敵タイマー
 		if (!HPfige_) {
 			timeSinceLastRemove_ += deltaTImer;
+			textureSwitchTimer_ += deltaTImer;  
 		}
 		if (timeSinceLastRemove_ >= 3) {
 			timeSinceLastRemove_ = 3;
+			PlayerDamagefige_ = false;
 		}
 		// 当たったらHPを減らしフラグリセット
 		if (HPfige_) {
 			userInterface_->RemoveHeart();
 			timeSinceLastRemove_ = 0;
 			HPfige_ = false;
+			PlayerDamagefige_ = true;
+			textureSwitchTimer_ = 0.0f;
 		}
 
 		particle_->Update(soul_->GetWorldPosition());
@@ -374,21 +405,18 @@ void GameScene::Draw() {
 #pragma endregion
 }
 
-void GameScene::CheckAllCollisions() { 
+void GameScene::CheckAllCollisions() {
 	Vector3 A, B;
 
-
-	///プレイヤーと敵の当たり判定(一マスのみ)
+	/// プレイヤーと敵の当たり判定(一マスのみ)
 
 	A = soul_->GetWorldPosition();
 	B = enemy_->GetWorldPosition();
 
-	
-	if (IsCollision(soul_->GetAABB(),enemy_->GetAABB()) &&  timeSinceLastRemove_ >= removeInterval_) {
+	if (IsCollision(soul_->GetAABB(), enemy_->GetAABB()) && timeSinceLastRemove_ >= removeInterval_) {
 		soul_->OnCollision();
 		HPfige_ = userInterface_->IsButtonPressed();
 	}
-
 
 	///プレイヤーと敵の当たり判定
 
