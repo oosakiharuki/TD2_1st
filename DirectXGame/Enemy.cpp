@@ -2,6 +2,12 @@
 #include <numbers>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "TextureManager.h"
+
+Enemy::~Enemy() {
+	delete spriteHp_;
+	delete spriteBar_;
+}
 
 void Enemy::Initialize(Model* model, uint32_t texture, uint32_t texture2, ViewProjection* viewProjection) {
 
@@ -20,6 +26,14 @@ void Enemy::Initialize(Model* model, uint32_t texture, uint32_t texture2, ViewPr
 
 	a = 2 * float(M_PI);
 
+
+	textureHp_ = TextureManager::Load("enemyHp.png");
+	textureBer_ = TextureManager::Load("enemyGauge.png");
+
+	spriteHp_ = Sprite::Create(textureHp_, hpBarPos);
+	spriteBar_ = Sprite::Create(textureBer_, hpBarPos);
+	
+	hpBarPos = {1000,660};
 }
 
 void Enemy::Update() {
@@ -53,14 +67,10 @@ void Enemy::Update() {
 	}
 
 	if (isHit_) {
-		if (hp <= 0) {
-			isDead_ = true;
-		}
 		worldTransform_.translation_.x += move.x * 2;
 		worldTransform_.rotation_.x += std::sin(radian / 2.0f);
 		timer -= 1.0f / 60.0f;
-		if (timer < 0) {
-			hp -= 1;
+		if (timer < 0) {		
 			isHit_ = false;
 			timer = 2.0f;
 			worldTransform_.rotation_.x = 0.0f;
@@ -68,7 +78,14 @@ void Enemy::Update() {
 	} else {
 		worldTransform_.rotation_.x = std::sin(radian);
 	}
+	
+	if (hp <= 0) {
+		isDead_ = true;
+	}
 
+	spriteHp_->SetPosition(hpBarPos);
+	spriteBar_->SetPosition(hpBarPos);
+	spriteHp_->SetSize({200.0f - (20 *(10 - hp)), 60.0f});
 }
 
 void Enemy::Draw() { 
@@ -78,6 +95,11 @@ void Enemy::Draw() {
 	else {
 		model_->Draw(worldTransform_, *viewProjection_, textureHandleDamage_);
 	}
+}
+
+void Enemy::Draw2D() { 
+	spriteHp_->Draw();
+	spriteBar_->Draw();
 }
 
 Vector3 Enemy::GetWorldPosition() {
@@ -90,4 +112,9 @@ Vector3 Enemy::GetWorldPosition() {
 	return worldPos;
 }
 
-void Enemy::OnCollision() { isHit_ = true; }
+void Enemy::OnCollision() { 
+	if (!isHit_) {
+		hp -= 1;
+	}
+	isHit_ = true; 
+}

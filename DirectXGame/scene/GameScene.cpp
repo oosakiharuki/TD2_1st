@@ -45,7 +45,7 @@ void GameScene::Initialize() {
 
 	number = 0;
 	playerNum = PlayerNum::right;
-	scene_ = GameSystem::countdown;
+	scene_ = GameSystem::game;
 
 	SoulModel_ = Model::CreateFromOBJ("playerOn", true);
 	soul_ = new Soul();
@@ -130,22 +130,22 @@ void GameScene::Update() {
 	switch (scene_) {
 	case GameSystem::setumei:
 		break;
-	case GameSystem::countdown:
-		countDownTimer_ -= deltaTImer;
-		if (countDownTimer_ < 0) {
-			scene_ = GameSystem::game;
-		}
-		if (!soul_->IsMove()) {
-			for (int i = 0; i < 3; i++) {
-				player[i]->Update();
-			}
-		}
+	//case GameSystem::countdown:
+	//	countDownTimer_ -= deltaTImer;
+	//	if (countDownTimer_ < 0) {
+	//		scene_ = GameSystem::game;
+	//	}
+	//	if (!soul_->IsMove()) {
+	//		for (int i = 0; i < 3; i++) {
+	//			player[i]->Update();
+	//		}
+	//	}
 
-		//soul_->Update();
-		//particle_->Update(soul_->GetWorldPosition());
-		//ChangePlayer();
+	//	//soul_->Update();
+	//	//particle_->Update(soul_->GetWorldPosition());
+	//	//ChangePlayer();
 
-		break;
+	//	break;
 	case GameSystem::game:
 
 		if (!soul_->IsMove()) {
@@ -243,15 +243,15 @@ void GameScene::Draw() {
 	switch (scene_) {
 	case GameSystem::setumei:
 		break;
-	case GameSystem::countdown:
-		//soul_->Draw();
+	//case GameSystem::countdown:
+	//	//soul_->Draw();
 
-		for (int i = 0; i < 3; i++) {
-			player[i]->Draw();
-		}
-		//particle_->Draw();
-		
-		break;
+	//	for (int i = 0; i < 3; i++) {
+	//		player[i]->Draw();
+	//	}
+	//	//particle_->Draw();
+	//	
+	//	break;
 	case GameSystem::game:
 
 		soul_->Draw();
@@ -291,7 +291,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-
+	enemy_->Draw2D();
 	userInterface_->Draw2D();
 
 	// スプライト描画後処理

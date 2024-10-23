@@ -1,11 +1,14 @@
+#include "Sprite.h"
 #include "Model.h"
 #include "WorldTransform.h"
 
 class Enemy{
 public:
+	~Enemy();
 	void Initialize(Model* model, uint32_t texture, uint32_t texture2, ViewProjection* viewProjection);
 	void Update();
 	void Draw();
+	void Draw2D();
 	Vector3 GetWorldPosition();
 	void OnCollision();
 
@@ -40,4 +43,11 @@ private:
 	float timer = 2.0f;
 	uint32_t hp;
 	bool isDead_ = false;
+
+	uint32_t textureHp_ = 0u;
+	uint32_t textureBer_ = 0u;
+	Sprite* spriteHp_ = nullptr;
+	Sprite* spriteBar_ = nullptr;
+
+	Vector2 hpBarPos;
 };

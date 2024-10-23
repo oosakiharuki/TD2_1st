@@ -22,7 +22,7 @@ enum class PlayerNum {
 
 enum class GameSystem {
 	setumei,
-	countdown,
+	//countdown,
 	game,
 	death,
 	clear
