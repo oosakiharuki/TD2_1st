@@ -59,7 +59,7 @@ void UserInterface::Update() {
 
 	// 攻撃後のクールタイム
 	if (!Chargeswitch_) {
-		chargesize_.x += 2.0f;
+		chargesize_.x += 0.2f;
 		if (chargesize_.x >= 200) {
 			chargesize_.x = 200.0f;
 		}

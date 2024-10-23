@@ -7,6 +7,7 @@
 #include<base/WinApp.h>
 #include<input/Input.h>
 #include<list>
+#include<xaudio2.h>
 
 class UserInterface
 {
