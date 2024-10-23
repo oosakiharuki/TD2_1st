@@ -78,6 +78,11 @@ void GameScene::Initialize() {
 	// サウンドの生成
 	soundBGM_ = new Sound(filenameBGM_);
 	soundSE_ = new Sound(filenameSE_);
+	// ファイルの指定
+	soundBGM_->LoadWav(filenameBGM_);
+	soundSE_->LoadWav(filenameSE_);
+	soundBGM_->SetVolume(volume1);
+	soundSE_->SetVolume(volume2);
 
 	deathParticle_ = new DeathParticle();
 	deathParticle_->Initialize(particlemodel_,&viewProjection_);

@@ -130,6 +130,9 @@ private: // メンバ変数
 	bool loopSound = true;  // ループ再生フラグ
 	bool isPlaying = false; // 一時的音声の再生中フラグ
 	bool isLooping = false; // ループ音声の再生中フラグ
+	// 音声
+	float volume1 = 0.3f;
+	float volume2 = 0.8f;
 
 	/// <summary>
 	/// ゲームシーン用
