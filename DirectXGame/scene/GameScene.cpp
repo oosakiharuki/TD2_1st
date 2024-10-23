@@ -133,8 +133,6 @@ void GameScene::ChangePlayer() {
 
 void GameScene::Update() {
 
-	ChangePlayer();
-
 	switch (scene_) {
 	case GameSystem::setumei:
 		break;
@@ -167,6 +165,7 @@ void GameScene::Update() {
 		enemy_->Update();
 		
 		CheckAllCollisions();
+		ChangePlayer();
 
 
 		if (soul_->IsDead()) {

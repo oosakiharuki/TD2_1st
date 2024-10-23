@@ -6,7 +6,7 @@ GameOver::~GameOver() { delete sprite_; }
 
 void GameOver::Initialize() {
 
-	textureHandle_ = TextureManager::Load("sample.png");
+	textureHandle_ = TextureManager::Load("gameover.png");
 	// sprite_ = new Sprite();
 	sprite_ = Sprite::Create(textureHandle_, {0, 0});
 	worldTransform_.Initialize();

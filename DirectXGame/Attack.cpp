@@ -7,7 +7,6 @@ void Attack::Initialize(Model* model, uint32_t textureHandle, ViewProjection* vi
 
 	worldTransform_.Initialize();
 	worldTransform_.translation_.x = 1000;
-	worldTransform_.scale_ = {3, 16, 0.5f};
 
 	viewProjeciton_ = viewProjection;
 }

@@ -19,8 +19,8 @@ void Soul::Initialize(Model* model, uint32_t texture, ViewProjection* viewProjec
 	isDead_ = false;
 	input_ = Input::GetInstance();
 
-	ModelAttack_ = Model::Create();
-	textureHandle2_ = TextureManager::Load("uvChecker.png");
+	ModelAttack_ = Model::CreateFromOBJ("attack",true);
+	textureHandle2_ = TextureManager::Load("attack/attack.png");
 
 	attack_ = new Attack();			
 	attack_->Initialize(ModelAttack_, textureHandle2_, viewProjection_);

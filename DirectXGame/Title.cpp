@@ -6,7 +6,7 @@ Title::~Title() { delete sprite_; }
 
 void Title::Initialize() { 
 	
-	textureHandle_ = TextureManager::Load("uvChecker.png");
+	textureHandle_ = TextureManager::Load("title.png");
 	//sprite_ = new Sprite();
 	sprite_ = Sprite::Create(textureHandle_, {0, 0});	
 	worldTransform_.Initialize();
