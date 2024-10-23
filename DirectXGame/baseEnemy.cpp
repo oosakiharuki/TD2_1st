@@ -1,7 +1,15 @@
 #include "BaseEnemy.h"
 //#include "Affin.h"
 //#include "MathUtility.h"
+
+#ifdef _DEBUG
 #include "imgui.h"
+
+#endif // !DEBUG
+
+
+
+
 #include "math/Vector3.h"
 #include <cassert>
 #include "GameScene.h"
