@@ -9,6 +9,7 @@ public:
 	void Draw();
 	void SetPosition(Vector3 pos);
 	Vector3 GetWorldPosition();
+	AABB GetAABB();
 
 private:
 	Model* model_ = nullptr;
@@ -18,4 +19,8 @@ private:
 	bool isAttackStart = false;
 	float AttackTimer = 1.0f;
 	const float deltaTimer = 1.0f / 60.0f;
+
+
+	static inline const float kWidth = 6.0f;
+	static inline const float kHeight = 32.0f;
 };

@@ -46,6 +46,16 @@ Vector3 Soul::GetWorldPosition() {
 	return worldPos;
 }
 
+AABB Soul::GetAABB() {
+	Vector3 worldPos_ = GetWorldPosition();
+
+	AABB aabb;
+	aabb.min = {worldPos_.x - kWidth / 2.0f, worldPos_.y - kHeight / 2.0f, worldPos_.z - kWidth / 2.0f};
+	aabb.max = {worldPos_.x + kWidth / 2.0f, worldPos_.y + kHeight / 2.0f, worldPos_.z + kWidth / 2.0f};
+
+	return aabb;
+};
+
 void Soul::GetPosition(Vector3 posS, Vector3 posE) {
 	worldTransform_.translation_ = posS;
 	

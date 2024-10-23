@@ -21,6 +21,7 @@ public:
 	bool IsDead() { return isDead_; }
 	Attack* GetAttack() { return attack_; }
 	void SetUI(UserInterface* ui) { userInterface_ = ui; }
+	AABB GetAABB();
 
 private:
 	enum class HowToMove {
@@ -61,6 +62,8 @@ private:
 	Model* model_;
 	WorldTransform worldTransform_;
 	ViewProjection* viewProjection_;
+	static inline const float kWidth = 1.0f;
+	static inline const float kHeight = 1.0f;
 
 	Segment segment;
 

@@ -15,6 +15,7 @@ public:
 	bool IsHit() const { return isHit_; }
 	bool IsDead() const { return isDead_; }
 	bool IsFinish() const { return isFinish_; }
+	AABB GetAABB();
 
 private:
 
@@ -23,6 +24,10 @@ private:
 	uint32_t textureHandleDamage_ = 0u;
 	WorldTransform worldTransform_;
 	ViewProjection* viewProjection_;
+
+	static inline const float kWidth = 2.0f;
+	static inline const float kHeight = 2.0f;
+
 
 	Vector4 color_;
 	ObjectColor objectColor_;

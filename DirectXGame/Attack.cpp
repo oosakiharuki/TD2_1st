@@ -46,3 +46,13 @@ Vector3 Attack::GetWorldPosition() {
 
 	return worldPos;
 }
+
+AABB Attack::GetAABB() {
+	Vector3 worldPos_ = GetWorldPosition();
+
+	AABB aabb;
+	aabb.min = {worldPos_.x - kWidth / 2.0f, worldPos_.y - kHeight / 2.0f, worldPos_.z - kWidth / 2.0f};
+	aabb.max = {worldPos_.x + kWidth / 2.0f, worldPos_.y + kHeight / 2.0f, worldPos_.z + kWidth / 2.0f};
+
+	return aabb;
+};

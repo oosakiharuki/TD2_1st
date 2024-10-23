@@ -15,6 +15,8 @@
 #include"Particle.h"
 #include"Sound.h"
 #include "DeathParticle.h"
+#include "baseEnemy.h"
+#include <list>
 
 enum class PlayerNum {
 	right,
@@ -29,6 +31,8 @@ enum class GameSystem {
 	death,
 	clear
 };
+ 
+class BaseEnemy;
 
 /// <summary>
 /// ゲームシーン
@@ -63,10 +67,12 @@ public: // メンバ関数
 
 	void ChangePlayer();
 	void CheckAllCollisions();
+	bool IsCollision(const AABB& aabb1, const AABB& aabb2);
 	
 	bool IsGameOver() { return isEnd_; }
 	bool IsGameClear() { return isClear_; }
 
+	void SetBaseEnemy();
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -98,6 +104,14 @@ private: // メンバ変数
 	Model* EnemyModel_;
 	uint32_t textureHandleE1_;
 	uint32_t textureHandleE2_;
+
+	//落下物
+	std::list<BaseEnemy*> enemies_;
+	BaseEnemy* baseEnemy_ = nullptr;
+	int timer = 20;
+	int place = 0;
+
+	
 
 	//勝ち負け
 	bool isEnd_ = false;

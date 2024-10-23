@@ -23,6 +23,10 @@ GameScene::~GameScene() {
 	delete soundBGM_;
 	delete soundSE_;
 	delete deathParticle_;
+
+	for (BaseEnemy* baseenemy_ : enemies_) {
+		delete baseenemy_;
+	}
 }
 
 void GameScene::Initialize() {
@@ -147,6 +151,13 @@ void GameScene::ChangePlayer() {
 	}
 }
 
+bool GameScene::IsCollision(const AABB& aabb1, const AABB& aabb2) {
+	if ((aabb1.min.x <= aabb2.max.x && aabb1.max.x >= aabb2.min.x) && (aabb1.min.y <= aabb2.max.y && aabb1.max.y >= aabb2.min.y) && (aabb1.min.z <= aabb2.max.z && aabb1.max.z >= aabb2.min.z)) {
+		return true;
+	}
+	return false;
+}
+
 void GameScene::Update() {
 
 	switch (scene_) {
@@ -195,6 +206,27 @@ void GameScene::Update() {
 		if (enemy_->IsDead()) {
 			scene_ = GameSystem::clear;
 		}
+
+
+		timer++;
+
+		if (timer >= 110) {
+			SetBaseEnemy();
+			timer = 0;
+		}
+
+		// 自キャラの更新
+		for (BaseEnemy* baseenemy_ : enemies_) {
+			baseenemy_->Update();
+		}
+
+		enemies_.remove_if([](BaseEnemy* enemy) { 
+			if (enemy->IsDead()) {
+				delete enemy;
+				return true;
+			}
+			return false;
+		});
 
 		break;
 	case GameSystem::death:
@@ -296,6 +328,14 @@ void GameScene::Draw() {
 		soul_->Draw();
 		enemy_->Draw();
 		particle_->Draw();
+
+		// 自キャラの描画
+		
+		for (BaseEnemy* baseenemy_ : enemies_) {
+			baseenemy_->Draw();
+		}
+		
+
 		break;
 	case GameSystem::death:
 		enemy_->Draw();
@@ -337,64 +377,51 @@ void GameScene::Draw() {
 void GameScene::CheckAllCollisions() { 
 	Vector3 A, B;
 
-	const float playerRadius = 1.0f;
-	
-	const float enemyRadius = 2.0f; 
-
-	Vector3 distance{};
-
-	//float L;
-
 
 	///プレイヤーと敵の当たり判定(一マスのみ)
 
 	A = soul_->GetWorldPosition();
 	B = enemy_->GetWorldPosition();
 
-	distance.x = (B.x - A.x) * (B.x - A.x);
-	distance.y = (B.y - A.y) * (B.y - A.y);
-	distance.z = (B.z - A.z) * (B.z - A.z);
 	
-	if (A.x <= B.x + enemyRadius && A.x + playerRadius >= B.x && //30秒ごとに判定がでる
-		A.y <= B.y + enemyRadius && A.y + playerRadius >= B.y && timeSinceLastRemove_ >= removeInterval_) {
+	if (IsCollision(soul_->GetAABB(),enemy_->GetAABB()) &&  timeSinceLastRemove_ >= removeInterval_) {
 		soul_->OnCollision();
 		HPfige_ = userInterface_->IsButtonPressed();
 	}
 
-	//L = (playerRadius + enemyRadiusX) * (playerRadius + enemyRadiusX);
-
-	//if (distance.x + distance.y + distance.z <= L) {
-	//	for (uint32_t i = 0; i < 3; i++) {
-	//		soul_->OnCollision();
-	//	}
-	//}
 
 	///プレイヤーと敵の当たり判定
-	/// 
-	///プレイヤーとアイテム
-	/// 
+
+	A = soul_->GetWorldPosition();
+
+	for (BaseEnemy* baseenemy_ : enemies_) {
+	
+		B = baseenemy_->GetWorldPosition();
+		if (IsCollision(soul_->GetAABB(), baseenemy_->GetAABB()) && timeSinceLastRemove_ >= removeInterval_) {
+			soul_->OnCollision();
+			HPfige_ = userInterface_->IsButtonPressed();
+		}
+	}
+
 	/// プレイヤー攻撃と敵
 
 	A = soul_->GetAttack()->GetWorldPosition();
 	B = enemy_->GetWorldPosition();
 
-	distance.x = (B.x - A.x) * (B.x - A.x);
-	distance.y = (B.y - A.y) * (B.y - A.y);
-	distance.z = (B.z - A.z) * (B.z - A.z);
-
-	const float attackRadiusX = 3.0f; 
-	const float attackRadiusY = 16.0f; 
-
-	if (A.x + -attackRadiusX <= B.x + enemyRadius && A.x + attackRadiusX >= B.x && 
-		A.y <= B.y + enemyRadius && A.y + attackRadiusY >= B.y) {
+	if (IsCollision(soul_->GetAttack()->GetAABB(), enemy_->GetAABB())) {
 		  enemy_->OnCollision();
 	}
-	
-	if (A.x + -attackRadiusX <= B.x + enemyRadius && A.x + attackRadiusX >= B.x && 
-		A.y >= B.y + -enemyRadius && A.y + -attackRadiusY <= B.y)
-	{
-		  enemy_->OnCollision();
-	}
-	///攻撃をくらわしてもプレイヤーと敵の当たり判定は残るよ
+}
 
+
+void GameScene::SetBaseEnemy() {
+	int randam = rand() % 5 - 1;
+	place += randam;
+	if (place > 4) {
+		 place = randam;
+	}
+
+	baseEnemy_ = new BaseEnemy();
+	baseEnemy_->Initialize(EnemyModel_, textureHandleE1_, {-20.0f + float(place * 10), 18, 0}, &viewProjection_);
+	enemies_.push_back(baseEnemy_);
 }

@@ -108,6 +108,7 @@
   <ItemGroup>
     <ClCompile Include="2d\ImGuiManager.cpp" />
     <ClCompile Include="Attack.cpp" />
+    <ClCompile Include="baseEnemy.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="Clear.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="3d\WorldTransform.h" />
     <ClInclude Include="Attack.h" />
     <ClInclude Include="audio\Audio.h" />
+    <ClInclude Include="baseEnemy.h" />
     <ClInclude Include="base\DirectXCommon.h" />
     <ClInclude Include="base\StringUtility.h" />
     <ClInclude Include="base\TextureManager.h" />
