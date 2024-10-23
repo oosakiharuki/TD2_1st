@@ -292,18 +292,18 @@ void GameScene::Update() {
 
 	// 音声の更新　: 例
 
-	// 一回だけの音声
-	if (playSound) {
-		if (!isPlaying) {     // 再生中でない場合
-			soundSE_->Play(); // 一回だけ再生
-		}
-		isPlaying = true; // 再生中フラグを立てる
-	} else {
-		if (isPlaying) {       // 再生中の場合のみ停止
-			soundSE_->Stop();  // 音声を停止
-			isPlaying = false; // 再生中フラグを下げる
-		}
-	}
+	//// 一回だけの音声
+	//if (playSound) {
+	//	if (!isPlaying) {     // 再生中でない場合
+	//		soundSE_->Play(); // 一回だけ再生
+	//	}
+	//	isPlaying = true; // 再生中フラグを立てる
+	//} else {
+	//	if (isPlaying) {       // 再生中の場合のみ停止
+	//		soundSE_->Stop();  // 音声を停止
+	//		isPlaying = false; // 再生中フラグを下げる
+	//	}
+	//}
 
 	// ループ音声
 	if (loopSound) {
