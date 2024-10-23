@@ -20,6 +20,8 @@ GameScene::~GameScene() {
 	delete particlemodel_;
 	delete particle_;
 	delete StageModel_;
+	delete soundBGM_;
+	delete soundSE_;
 }
 
 void GameScene::Initialize() {
@@ -71,6 +73,10 @@ void GameScene::Initialize() {
 	particle_->Initialize(particlemodel_, &viewProjection_, Vector3(-20.0f, 0, 0));
 
 	StageModel_ = Model::CreateFromOBJ("Stage", true);
+
+	// サウンドの生成
+	soundBGM_ = new Sound(filenameBGM_);
+	soundSE_ = new Sound(filenameSE_);
 }
 
 void GameScene::ChangePlayer() {
@@ -221,6 +227,38 @@ void GameScene::Update() {
 		soul_->Update();
 		break;
 	}
+
+
+	// 音声の更新　: 例
+
+	// 一回だけの音声
+	if (playSound) {
+		if (!isPlaying) {     // 再生中でない場合
+			soundSE_->Play(); // 一回だけ再生
+		}
+		isPlaying = true; // 再生中フラグを立てる
+	} else {
+		if (isPlaying) {       // 再生中の場合のみ停止
+			soundSE_->Stop();  // 音声を停止
+			isPlaying = false; // 再生中フラグを下げる
+		}
+	}
+
+	// ループ音声
+	if (loopSound) {
+		if (!isLooping) {              // ループ中でない場合
+			soundBGM_->PlayLoop(); // ループ再生を開始
+			isLooping = true;          // ループ中フラグを立てる
+		}
+	} else {
+		if (isLooping) {           // ループ中の場合のみ停止
+			soundBGM_->Stop(); // ループ再生を停止
+			isLooping = false;     // ループ中フラグを下げる
+		}
+	}
+
+
+
 }
 
 void GameScene::Draw() {
