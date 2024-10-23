@@ -141,7 +141,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
-	win->CreateGameWindow(L"TD2_1st");
+	win->CreateGameWindow(L"2143_以心伝心");
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
