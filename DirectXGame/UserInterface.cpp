@@ -46,9 +46,10 @@ void UserInterface::Initialize() {
 }
 
 void UserInterface::Update() {
-
-	if (input_->PushKey(DIK_SPACE) && chargesize_.x == 200) {
-		attack_ = true;	
+	if (!isMove_) {
+		if (input_->PushKey(DIK_SPACE) && chargesize_.x == 200) {
+			attack_ = true;
+		}
 	}
 
 	if (attack_) {
@@ -56,6 +57,7 @@ void UserInterface::Update() {
 		Chargeswitch_ = true;
 	}
 
+	// 攻撃後のクールタイム
 	if (!Chargeswitch_) {
 		chargesize_.x += 2.0f;
 		if (chargesize_.x >= 200) {

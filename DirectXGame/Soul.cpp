@@ -95,10 +95,9 @@ void Soul::Update() {
 
 		worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
 		worldTransform_.translation_.y = min(worldTransform_.translation_.y, kMoveLimitY);
-		if (input_->TriggerKey(DIK_SPACE) && AttackCount <= 0.0f) {
+		if (userInterface_->GetAttack()) {
 			isAttack = true;
 			attack_->SetPosition(GetWorldPosition());
-			AttackCount = 3.0f;
 		}
 
 	} else {
@@ -130,7 +129,7 @@ void Soul::Update() {
 		HitCount -= deltaTimer;
 		if (HitCount < 0.0f) {
 			isHit = false;
-			HitCount = 5.0f;
+			HitCount = 3.0f;
 		}
 	}
 
@@ -138,12 +137,6 @@ void Soul::Update() {
 	if (!hp) {
 		isDead_ = true;
 	}	
-
-	//攻撃後のクールタイム
-	AttackCount -= deltaTimer;
-	if (AttackCount < 0) {
-		AttackCount = 0;
-	}
 
 	attack_->Update();
 
@@ -155,6 +148,6 @@ void Soul::Draw() {
 	if (isMove) {
 	model_->Draw(worldTransform_, *viewProjection_);
 	}
-		attack_->Draw();
+	attack_->Draw();
 	
 }

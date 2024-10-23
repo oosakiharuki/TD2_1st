@@ -30,6 +30,8 @@ public:
 	}
 
 	void RemoveHeart();
+	bool GetAttack() { return attack_; }
+	void SetIsMove(bool move) { isMove_ = move; }
 
 private:
 
@@ -50,6 +52,7 @@ private:
 	// フラグ
 	bool Chargeswitch_ = false;
 	bool attack_ = false;
+	bool isMove_ = false;
 
 	// キーボード入力
 	Input* input_ = nullptr;

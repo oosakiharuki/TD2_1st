@@ -85,7 +85,6 @@ private: // メンバ変数
 	PlayerNum playerNum;
 	GameSystem scene_;
 
-	float countDownTimer_ = 4.0f;
 	const float deltaTImer = 1.0f / 60.0f;
 
 	//魂の流れ
@@ -102,6 +101,7 @@ private: // メンバ変数
 	bool isEnd_ = false;
 	bool isClear_ = false;
 	float deathTimer_ = 2.0f;
+	bool playerDeath_ = false;
 
 	ScreenBack* screenBack;
 	// UI
@@ -114,8 +114,8 @@ private: // メンバ変数
 
 	// HPフラグ
 	bool HPfige_ = false;
-	uint32_t timeSinceLastRemove_;
-	uint32_t removeInterval_;
+	float timeSinceLastRemove_;
+	float removeInterval_;
 
 	/// <summary>
 	/// ゲームシーン用

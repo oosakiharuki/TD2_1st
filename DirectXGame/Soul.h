@@ -2,6 +2,7 @@
 #include "WorldTransform.h"
 #include "MyMath.h"
 #include "Attack.h"
+#include "UserInterface.h"
 
 class Input;
 
@@ -19,6 +20,7 @@ public:
 	void OnCollision();
 	bool IsDead() { return isDead_; }
 	Attack* GetAttack() { return attack_; }
+	void SetUI(UserInterface* ui) { userInterface_ = ui; }
 
 private:
 	enum class HowToMove {
@@ -73,7 +75,7 @@ private:
 
 	uint32_t hp;
 	bool isHit = false;
-	float HitCount = 5.0f;
+	float HitCount = 3.0f;
 	const float deltaTimer = 1.0f / 60.0f;
 
 	bool isDead_ = false;
@@ -81,7 +83,8 @@ private:
 	Input* input_ = nullptr;
 	Attack* attack_ = nullptr;
 	
-	float AttackCount = 0.0f;
+	UserInterface* userInterface_;
+	float AttackCount = 3.0f;
 	Model* ModelAttack_ = nullptr;
 	uint32_t textureHandle2_ = 0u;
 
