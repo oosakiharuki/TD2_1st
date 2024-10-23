@@ -55,7 +55,7 @@ void GameScene::Initialize() {
 	soul_->Initialize(SoulModel_, textureHandleP_, &viewProjection_, {-20,0,0});
 
 
-	EnemyModel_ = Model::CreateFromOBJ("cube", true);
+	EnemyModel_ = Model::CreateFromOBJ("enemy", true);
 	enemy_ = new Enemy();
 	enemy_->Initialize(EnemyModel_, textureHandleE1_,textureHandleE2_, &viewProjection_);
 
