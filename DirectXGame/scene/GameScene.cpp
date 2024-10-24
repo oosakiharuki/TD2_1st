@@ -40,9 +40,9 @@ void GameScene::Initialize() {
 
 	PlayerOnModel_ = Model::CreateFromOBJ("playerOn", true);
 	PlayerOffModel_ = Model::CreateFromOBJ("playerOff", true);
-	PlayerDamageModel_= Model::CreateFromOBJ("PlayerDamage", true);
+	PlayerDamageModel_ = Model::CreateFromOBJ("PlayerDamage", true);
 	textureHandleP_ = TextureManager::Load("playerOn/playerOn.png");
-	textureDamage_  = TextureManager::Load("PlayerDamage/PlayerDamage.png");
+	textureDamage_ = TextureManager::Load("PlayerDamage/PlayerDamage.png");
 	currentTexture_ = TextureManager::Load("PlayerDamage/PlayerDamage.png");
 	textureHandleE1_ = TextureManager::Load("enemy.png");
 	textureHandleE2_ = TextureManager::Load("enemyDamage.png");
@@ -54,17 +54,15 @@ void GameScene::Initialize() {
 
 	number = 0;
 	playerNum = PlayerNum::right;
-	scene_ = GameSystem::game;
+	scene_ = GameSystem::setumei;
 
 	SoulModel_ = Model::CreateFromOBJ("playerOn", true);
 	soul_ = new Soul();
-	soul_->Initialize(SoulModel_, textureHandleP_, &viewProjection_, {-20,0,0});
-
+	soul_->Initialize(SoulModel_, textureHandleP_, &viewProjection_, {-20, 0, 0});
 
 	EnemyModel_ = Model::CreateFromOBJ("enemy", true);
 	enemy_ = new Enemy();
-	enemy_->Initialize(EnemyModel_, textureHandleE1_,textureHandleE2_, &viewProjection_);
-
+	enemy_->Initialize(EnemyModel_, textureHandleE1_, textureHandleE2_, &viewProjection_);
 
 	screenBack = new ScreenBack();
 	screenBack->Initialisz();
@@ -91,7 +89,10 @@ void GameScene::Initialize() {
 	soundSE_->SetVolume(volume2);
 
 	deathParticle_ = new DeathParticle();
-	deathParticle_->Initialize(particlemodel_,&viewProjection_);
+	deathParticle_->Initialize(particlemodel_, &viewProjection_);
+
+	tetureSetumei = TextureManager::Load("Setumei.png");
+	Setumei = Sprite::Create(tetureSetumei, {0, 0});
 }
 
 void GameScene::ChangePlayer() {
@@ -164,6 +165,9 @@ void GameScene::Update() {
 
 	switch (scene_) {
 	case GameSystem::setumei:
+		if (input_->TriggerKey(DIK_SPACE)) {
+			scene_ = GameSystem::game;
+		}
 		break;
 	case GameSystem::game:
 
@@ -353,8 +357,6 @@ void GameScene::Draw() {
 	}
 
 	switch (scene_) {
-	case GameSystem::setumei:
-		break;
 	case GameSystem::game:
 		soul_->Draw();
 		enemy_->Draw();
@@ -395,6 +397,10 @@ void GameScene::Draw() {
 	/// </summary>
 	enemy_->Draw2D();
 	switch (scene_) {
+		case GameSystem::setumei:
+			Setumei->Draw();
+
+			break;
 	case GameSystem::game:
 		userInterface_->Draw2D();
 		break;

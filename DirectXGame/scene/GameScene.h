@@ -155,6 +155,11 @@ private: // メンバ変数
     float textureSwitchTimer_ = 0.0f;
 	const float kTextureSwitchInterval_ = 0.2f; // 0.5秒ごとに切り替える
 
+
+uint32_t tetureSetumei;
+	Sprite* Setumei;
+
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
